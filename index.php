@@ -265,7 +265,7 @@ $user_name = 'Евгений'; // укажите здесь ваше имя
                             </div>
                         <?php elseif ($post['type'] == 'post-link'): ?>
                             <div class="post-link__wrapper">
-                             <a class="post-link__external" href="http://<?=$post['content'];?>">
+                             <a class="post-link__external" href="http://<?=$post['content']; ?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
                                    <div class="post-link__icon-wrapper">
                                       <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
