@@ -40,12 +40,12 @@ $post = [
     ]
 ];
 
-function post_control($post, $lenght=300) {
+function limit_string_lenght($post, $lenght=300) {
     if (strlen($post) > $lenght) {
        $words = explode(' ', $post);
        $lenght_post = 0;
        for ($i=0; $i<count($words); $i++) {
-       $lenght_post = $lenght_post + strlen($words[$i]);
+       $lenght_post += strlen($words[$i]);
        if  ($lenght_post > $lenght) {
            break;
        };
@@ -54,11 +54,14 @@ function post_control($post, $lenght=300) {
     $words = array_slice($words, 0, $i-1);
     $post = implode(' ', $words);
     $post = '<p>' . $post . "..." . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    } else {
+        $post = '<p>' . $post . '</p>';
+
     };
     
     return $post;
 
-}
+};
 
 $user_name = 'Евгений'; // укажите здесь ваше имя
 
@@ -278,7 +281,7 @@ $user_name = 'Евгений'; // укажите здесь ваше имя
                           <cite>Неизвестный Автор</cite>
                         </blockquote>
                         <?php elseif ($post['type'] == 'post-text'): ?>
-                            <p><?=post_control($post['content'])?></p>
+                            <?=limit_string_lenght($post['content'])?>
                         <?php elseif ($post['type'] == 'post-photo'): ?>
                             <div class="post-photo__image-wrapper">
                               <img src="img/<?=$post['content'];?>" alt="Фото от пользователя" width="360" height="240">
