@@ -108,9 +108,9 @@
         </div>
     </div>
 </header>
-<section class="page__main page__main--popular">
-    <?=$page_content ?>
-</section>
+
+<?=$page_content ?>
+    
 <footer class="footer">
     <div class="footer__wrapper">
         <div class="footer__container container">
