@@ -141,7 +141,9 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['username']);?></b>
-                                <time class="post__time" datetime="">дата</time>
+
+                                
+                                <time class="post__time" datetime="<?=$post['time'];?>" title="<?=date("d.m.Y H:i", strtotime($post['time']));?>"><?=convert_date_toeasy_form($post['time']) . ' ' . 'назад';?></time>
                             </div>
                         </a>
                     </div>
