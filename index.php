@@ -1,6 +1,7 @@
 <?php
 require_once 'helpers.php';
 $is_auth = rand(0, 1);
+$user_name = 'Евгений';
 date_default_timezone_set('Europe/Moscow');
 
 $post = [
@@ -45,8 +46,6 @@ foreach ($post as $key => $content) {
     $post[$key]['time'] = generate_random_date($key);
 };
 
-
-
 function convert_date_toeasy_form($date) {
   
     $date = time() - strtotime($date);
@@ -72,13 +71,8 @@ function convert_date_toeasy_form($date) {
         $date = ceil($month);
         $date .= ' ' . get_noun_plural_form($date, 'месяц', 'месяца', 'месяцев');
     }
-
     return $date;
 };
-
-
-
-
 
 function limit_string_lenght($post, $lenght=300) {
     if (strlen($post) > $lenght) {
@@ -98,8 +92,6 @@ function limit_string_lenght($post, $lenght=300) {
     };
       return $post;
 };
-$user_name = 'Евгений';
-
 
 $page_content = include_template('main.php', ['post' => $post]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => 'readme: популярное',]);
