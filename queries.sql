@@ -1,16 +1,16 @@
 --Добавляем тип постов
 INSERT INTO type_content (name, type)
-    VALUES ('Текст', 'text'),
-           ('Цитата', 'quote'),
-           ('Картинка', 'photo'),
-           ('Видео', 'video'),
-           ('Ссылка', 'link');
+    VALUES ('Текст', 'post-text'),
+           ('Цитата', 'post-quote'),
+           ('Картинка', 'post-photo'),
+           ('Видео', 'post-video'),
+           ('Ссылка', 'post-link');
 
 --Добавляем пользователей
-INSERT INTO users (email, login, password, avatar)
+INSERT INTO users (email, username, password, avatar)
     VALUES ('larisa@gmail.com','Лариса','Aa145236','userpic-larisa-small.jpg'),
            ('vlad666@ya.ru','Влад','145236Aa','userpic.jpg'),
-           ('VICTOR@icloud.com', 'Виктор', 'qwerty', 'userpic.jpg');
+           ('VICTOR@icloud.com', 'Виктор', 'qwerty', 'userpic-mark.jpg');
 
 --Добавляем посты
 INSERT INTO posts (header, quote_author, text_content, photo_content, video_content, link_content, view_count, user_id, type_id)

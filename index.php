@@ -4,48 +4,24 @@ $is_auth = rand(0, 1);
 $user_name = 'Евгений';
 date_default_timezone_set('Europe/Moscow');
 
-$post = [
-    [
-        'header' => 'Цитата',
-        'type' => 'post-quote',
-        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-        'username' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'
-    ],
-    [
-        'header' => 'Игра престолов',
-        'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'username' => 'Владик',
-        'avatar' => 'userpic.jpg'
-    ],
-    [
-        'header' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'content' => 'rock-medium.jpg',
-        'username' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg' 
-    ],
-    [
-        'header' => 'Моя мечта',
-        'type' => 'post-photo',
-        'content' => 'coast-medium.jpg',
-        'username' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg' 
-    ],
-    [
-        'header' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'content' => 'www.htmlacademy.ru',
-        'username' => 'Владик',
-        'avatar' => 'userpic.jpg'
-    ]
-];
+$con = mysqli_connect("localhost", "root", "","readme");
+mysqli_set_charset($con, "utf8");
+if (!$con) {
+    print ("Отсутствеут подключение" . mysqli_connect_error());
 
-foreach ($post as $key => $content) {
-    $post[$key]['time'] = generate_random_date($key);
-};
+$sql_types = 'SELECT * FROM type_content';
+$result = mysqli_query($con, $sql_types);
+$type = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$sql_posts = 'SELECT  u.username, u.avatar, p.header, p.datatime_add, t.type,
+        p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content 
+        FROM posts p 
+        INNER JOIN users u ON p.user_id = u.id 
+        INNER JOIN type_content t ON p.type_id = t.id
+        ORDER BY view_count DESC';
+$result = mysqli_query($con, $sql_posts);
+$post = mysqli_fetch_all($result, MYSQLI_ASSOC);
+ 
 function convert_date_toeasy_form($date) {
   
     $date = time() - strtotime($date);
@@ -93,8 +69,7 @@ function limit_string_lenght($post, $lenght=300) {
       return $post;
 };
 
-$page_content = include_template('main.php', ['post' => $post]);
+$page_content = include_template('main.php', ['post' => $post, 'type' => $type]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => 'readme: популярное',]);
 print($layout_content);
-
 ?>
