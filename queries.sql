@@ -38,8 +38,7 @@ SELECT text_content, photo_content, video_content, link_content FROM posts WHERE
 --получить список комментариев для одного поста, в комментариях должен быть логин пользователя
 SELECT content, u.login FROM comments c
 	INNER JOIN `users` u ON c.user_id = u.id
-    INNER JOIN `posts` p ON c.post_id = p.id
-    WHERE p.id = 3;
+    WHERE c.post_id = 3;
 
 --добавить лайк к посту
 INSERT INTO likes SET user_id = '1', post_id = '5';
