@@ -5,13 +5,14 @@ $user_name = 'Евгений';
 date_default_timezone_set('Europe/Moscow');
 
 $con = mysqli_connect("localhost", "root", "","readme");
-mysqli_set_charset($con, "utf8");
 if (!$con) {
-    print ("Отсутствеут подключение" . mysqli_connect_error());
+    die ('Отсутствует подключение');
+};
 
+mysqli_set_charset($con, "utf8");
 $sql_types = 'SELECT * FROM type_content';
 $result = mysqli_query($con, $sql_types);
-$type = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $sql_posts = 'SELECT  u.username, u.avatar, p.header, p.datatime_add, t.type,
         p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content 
@@ -20,7 +21,7 @@ $sql_posts = 'SELECT  u.username, u.avatar, p.header, p.datatime_add, t.type,
         INNER JOIN type_content t ON p.type_id = t.id
         ORDER BY view_count DESC';
 $result = mysqli_query($con, $sql_posts);
-$post = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
  
 function convert_date_toeasy_form($date) {
   
@@ -69,7 +70,7 @@ function limit_string_lenght($post, $lenght=300) {
       return $post;
 };
 
-$page_content = include_template('main.php', ['post' => $post, 'type' => $type]);
+$page_content = include_template('main.php', ['post' => $posts, 'type' => $types]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => 'readme: популярное',]);
 print($layout_content);
 ?>
