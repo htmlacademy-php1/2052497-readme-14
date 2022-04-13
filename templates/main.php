@@ -94,19 +94,19 @@
                     <?php if (htmlspecialchars($post['type']) == 'post-quote'): ?>
                         <blockquote>
                           <p>
-                          <?=htmlspecialchars($post['content']);?>
+                          <?=htmlspecialchars($post['text_content']);?>
                           </p>
-                          <cite>Неизвестный Автор</cite>
+                          <cite><?=htmlspecialchars($post['quote_author']);?></cite>
                         </blockquote>
                         <?php elseif (htmlspecialchars($post['type']) == 'post-text'): ?>
-                            <?=limit_string_lenght(htmlspecialchars($post['content']))?>
+                            <?=limit_string_lenght(htmlspecialchars($post['text_content']))?>
                         <?php elseif (htmlspecialchars($post['type']) == 'post-photo'): ?>
                             <div class="post-photo__image-wrapper">
-                              <img src="img/<?=htmlspecialchars($post['content']);?>" alt="Фото от пользователя" width="360" height="240">
+                              <img src="img/<?=htmlspecialchars($post['photo_content']);?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
                         <?php elseif (htmlspecialchars($post['type']) == 'post-link'): ?>
                             <div class="post-link__wrapper">
-                             <a class="post-link__external" href="http://<?=htmlspecialchars($post['content']); ?>" title="Перейти по ссылке">
+                             <a class="post-link__external" href="http://<?=htmlspecialchars($post['link_content']); ?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
                                    <div class="post-link__icon-wrapper">
                                       <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -115,13 +115,13 @@
                                    <h3><?=htmlspecialchars($post['header']); ?></h3>
                                    </div>
                                 </div>
-                                   <span><?=htmlspecialchars($post['content']);?></span>
+                                   <span><?=htmlspecialchars($post['link_content']);?></span>
                              </a>
                             </div>
                         <?php elseif (htmlspecialchars($post['type']) == 'post-video'): ?>
                             <div class="post-video__block">
                                  <div class="post-video__preview">
-                                    <?=embed_youtube_cover(htmlspecialchars($post['content'])); ?>
+                                    <?=embed_youtube_cover(htmlspecialchars($post['video_content'])); ?>
                                     <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
                                  </div>
                                  <a href="post-details.html" class="post-video__play-big button">
@@ -141,7 +141,7 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['username']);?></b>
-                                <time class="post__time" datetime="<?=$post['time'];?>" title="<?=date("d.m.Y H:i", strtotime($post['time']));?>"><?=convert_date_toeasy_form($post['time']);?> назад</time>
+                                <time class="post__time" datetime="<?=$post['datatime_add'];?>" title="<?=date("d.m.Y H:i", strtotime($post['datatime_add']));?>"><?=convert_date_toeasy_form($post['datatime_add']);?> назад</time>
                             </div>
                         </a>
                     </div>
