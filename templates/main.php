@@ -37,12 +37,12 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php echo ($type == NULL) ? "filters__button--active" : ""; ?>" href="?">
                             <span>Все</span>
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
+                        <a class="filters__button filters__button--photo button <?php echo ($type == '3') ? "filters__button--active" : ""; ?>" href="?type=3">
                             <span class="visually-hidden">Фото</span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-photo"></use>
@@ -50,7 +50,7 @@
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
+                        <a class="filters__button filters__button--video button <?php echo ($type == '4') ? "filters__button--active" : ""; ?>" href="?type=4">
                             <span class="visually-hidden">Видео</span>
                             <svg class="filters__icon" width="24" height="16">
                                 <use xlink:href="#icon-filter-video"></use>
@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
+                        <a class="filters__button filters__button--text button <?php echo ($type == '1') ? "filters__button--active" : ""; ?>" href="?type=1">
                             <span class="visually-hidden">Текст</span>
                             <svg class="filters__icon" width="20" height="21">
                                 <use xlink:href="#icon-filter-text"></use>
@@ -66,7 +66,7 @@
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
+                        <a class="filters__button filters__button--quote button <?php echo ($type == '2') ? "filters__button--active" : ""; ?>" href="?type=2">
                             <span class="visually-hidden">Цитата</span>
                             <svg class="filters__icon" width="21" height="20">
                                 <use xlink:href="#icon-filter-quote"></use>
@@ -74,7 +74,7 @@
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
+                        <a class="filters__button filters__button--link button <?php echo ($type == '5') ? "filters__button--active" : ""; ?>" href="?type=5">
                             <span class="visually-hidden">Ссылка</span>
                             <svg class="filters__icon" width="21" height="18">
                                 <use xlink:href="#icon-filter-link"></use>
@@ -88,7 +88,7 @@
             <?php foreach ($post as $post): ?>
             <article class="popular__post post <?=htmlspecialchars($post['type']);?>">
                 <header class="post__header">
-                    <h2><?=htmlspecialchars($post['header']);?></h2>
+                    <h2><a href="post.php?id=<?=$post['id'];?>"><?=htmlspecialchars($post['header']);?></a></h2>
                 </header>
                 <div class="post__main">
                     <?php if (htmlspecialchars($post['type']) == 'post-quote'): ?>

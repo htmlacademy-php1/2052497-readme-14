@@ -1,4 +1,57 @@
 <?php
+/** Показывает сколько прошло времени от временной метки в удобном формате **минут назад */
+function convert_date_toeasy_form($date) {
+  
+    $date = time() - strtotime($date);
+    $min = $date / 60;
+    $hour = $min / 60;
+    $day = $hour / 24;
+    $week = $day / 7;
+    $month = $week / 5;
+    $year = $month / 12;
+
+    if ($min < 60) {
+        $date = ceil($min);
+        $date .= ' ' . get_noun_plural_form($date, 'минуту', 'минуты', 'минут');
+    }else if ($hour < 24 && $min >= 60) {
+        $date = ceil($hour);
+        $date .= ' ' . get_noun_plural_form($date, 'час', 'часа', 'часов');
+    }else if ($day < 7 && $hour >= 24) {
+        $date = ceil($day);
+        $date .= ' ' . get_noun_plural_form($date, 'день', 'дня', 'дней');
+    }else if ($day >= 7 && $week < 5) {
+        $date = ceil($week);
+        $date .= ' ' . get_noun_plural_form($date, 'неделю', 'недели', 'недель');
+    }else if ($week >= 5 && $month < 12) {
+        $date = ceil($month);
+        $date .= ' ' . get_noun_plural_form($date, 'месяц', 'месяца', 'месяцев');
+    }else if ($month >= 12) {
+        $date = ceil($year);
+        $date .= ' ' . get_noun_plural_form($date, 'год', 'года', 'лет');
+    }
+    return $date;
+};
+
+/**Ограничивае длину отображаемого текста до 300 символов в посте-плитке */
+function limit_string_lenght($post, $lenght=300) {
+    if (strlen($post) > $lenght) {
+       $words = explode(' ', $post);
+       $lenght_post = 0;
+       for ($i=0; $i<count($words); $i++) {
+       $lenght_post += strlen($words[$i]);
+       if  ($lenght_post > $lenght) {
+           break;
+       };
+    }
+    $words = array_slice($words, 0, $i-1);
+    $post = implode(' ', $words);
+    $post = '<p>' . $post . "..." . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    } else {
+        $post = '<p>' . $post . '</p>';
+    };
+      return $post;
+};
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
