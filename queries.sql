@@ -1,10 +1,10 @@
 --Добавляем тип постов
 INSERT INTO type_content (name, type)
-    VALUES ('Текст', 'post-text'),
-           ('Цитата', 'post-quote'),
-           ('Картинка', 'post-photo'),
-           ('Видео', 'post-video'),
-           ('Ссылка', 'post-link');
+    VALUES ('Текст', 'text'),
+           ('Цитата', 'quote'),
+           ('Картинка', 'photo'),
+           ('Видео', 'video'),
+           ('Ссылка', 'link');
 
 --Добавляем пользователей
 INSERT INTO users (email, username, password, avatar)
