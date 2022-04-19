@@ -18,11 +18,15 @@ if ($post_id = filter_input(INPUT_GET, 'id')) {
 };
 /**Информация о посте и его создателе */
 $sql_post = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t.type,
-     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count
-     FROM posts p 
-     INNER JOIN users u ON p.user_id = u.id 
-     INNER JOIN type_content t ON p.type_id = t.id
-     WHERE p.id = $sql_post_id";
+p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
+COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
+FROM posts p 
+INNER JOIN users u ON p.user_id = u.id 
+INNER JOIN type_content t ON p.type_id = t.id
+LEFT JOIN comments c ON c.post_id = p.id
+LEFT JOIN likes l ON l.post_id = p.id
+WHERE p.id = $post_id
+GROUP BY p.id, c.post_id, l.post_id";
 $result_post = mysqli_query($con, $sql_post);
 $post = mysqli_fetch_assoc($result_post);
 
@@ -30,29 +34,17 @@ if ($post['id'] != $post_id) {
     die ('Пост не найден');
 };
 
+$user_id = $post['user_id'];
 
 /**Количество постов у пользователя */
-$sql_count_post = "SELECT COUNT(id) amount FROM posts WHERE user_id = $post[user_id]";
+$sql_count_post = "SELECT COUNT(id) amount FROM posts WHERE user_id = $user_id";
 $result_count_post = mysqli_query($con, $sql_count_post);
 $count_posts = mysqli_fetch_assoc($result_count_post);
 
-
 /**Количество подписчиков у пользователя */
-$sql_count_follow = "SELECT COUNT(follower_id) amount FROM subscriptions WHERE user_id = $post[user_id]";
+$sql_count_follow = "SELECT COUNT(follower_id) amount FROM subscriptions WHERE user_id = $user_id";
 $result_count_follow = mysqli_query($con, $sql_count_follow);
 $count_followers = mysqli_fetch_assoc($result_count_follow);
-
-
-/**Количество лайков у поста */
-$sql_count_likes = "SELECT COUNT(user_id) amount FROM likes WHERE post_id = $post_id";
-$result_count_likes = mysqli_query($con, $sql_count_likes);
-$count_likes = mysqli_fetch_assoc($result_count_likes);
-
-
-/**Количество комментариев к посту */
-$sql_count_comment = "SELECT COUNT(content) amount FROM comments WHERE post_id = $post_id";
-$result_count_comment = mysqli_query($con, $sql_count_comment);
-$count_comments = mysqli_fetch_assoc($result_count_comment);
 
 //Массив с комментариями
 $sql_comments = "SELECT c.content, c.dt_add, u.avatar, u.username FROM comments c
@@ -61,22 +53,22 @@ $sql_comments = "SELECT c.content, c.dt_add, u.avatar, u.username FROM comments 
 $result_comments = mysqli_query($con, $sql_comments);
 $comments = mysqli_fetch_all($result_comments, MYSQLI_ASSOC);
 
-
 //Массив с хештегами
-$sql_hashtags = "SELECT h.name FROM posts p
-INNER JOIN post_hashtag ph ON p.id = ph.post_id
+$sql_hashtags = "SELECT h.name FROM post_hashtag ph
 INNER JOIN hashtags h ON ph.hashtag_id = h.id
-WHERE p.id = $post_id";
+WHERE ph.post_id = $post_id";
 $result_hashtags = mysqli_query($con, $sql_hashtags);
 $hashtags = mysqli_fetch_all($result_hashtags, MYSQLI_ASSOC);
 
 
 
 $post_info = include_template('post-' . $post['type'] . '.php', ['post' => $post]);
+
 $page_content = include_template('post-details.php', 
     ['post' => $post, 'type' => $types, 'post_info' => $post_info,
     'count_posts' => $count_posts, 'count_followers' => $count_followers,
-    'count_likes' => $count_likes, 'count_comments' => $count_comments, 'hashtags' => $hashtags, 'comments' => $comments]);
+    'hashtags' => $hashtags, 'comments' => $comments]);
+
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => $post['header']]);
 print($layout_content);
 ?>
