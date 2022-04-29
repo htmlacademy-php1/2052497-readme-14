@@ -1,14 +1,7 @@
 <?php
 require_once 'helpers.php';
-$is_auth = rand(0, 1);
-$user_name = 'Евгений';
-date_default_timezone_set('Europe/Moscow');
-$con = mysqli_connect("localhost", "root", "","readme");
-if (!$con) {
-    die ('Отсутствует подключение');
-};
+require_once 'init.php';
 
-mysqli_set_charset($con, "utf8");
 $sql_types = 'SELECT * FROM type_content';
 $result = mysqli_query($con, $sql_types);
 $types = mysqli_fetch_all($result, MYSQLI_ASSOC);

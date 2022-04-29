@@ -72,7 +72,7 @@
                             <?=limit_string_lenght(htmlspecialchars($post['text_content']))?>
                         <?php elseif (htmlspecialchars($post['type']) == 'photo'): ?>
                             <div class="post-photo__image-wrapper">
-                              <img src="img/<?=htmlspecialchars($post['photo_content']);?>" alt="Фото от пользователя" width="360" height="240">
+                              <img src="<?=htmlspecialchars($post['photo_content']);?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
                         <?php elseif (htmlspecialchars($post['type']) == 'link'): ?>
                             <div class="post-link__wrapper">
