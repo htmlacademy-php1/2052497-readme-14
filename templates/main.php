@@ -72,7 +72,7 @@
                             <?=limit_string_lenght(htmlspecialchars($post['text_content']))?>
                         <?php elseif (htmlspecialchars($post['type']) == 'photo'): ?>
                             <div class="post-photo__image-wrapper">
-                              <img src="img/<?=htmlspecialchars($post['photo_content']);?>" alt="Фото от пользователя" width="360" height="240">
+                              <img src="<?=htmlspecialchars($post['photo_content']);?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
                         <?php elseif (htmlspecialchars($post['type']) == 'link'): ?>
                             <div class="post-link__wrapper">
@@ -92,7 +92,7 @@
                             <div class="post-video__block">
                                  <div class="post-video__preview">
                                     <?=embed_youtube_cover(htmlspecialchars($post['video_content'])); ?>
-                                    <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
+                                   <!-- <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">-->
                                  </div>
                                  <a href="post-details.html" class="post-video__play-big button">
                                     <svg class="post-video__play-big-icon" width="14" height="14">
