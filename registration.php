@@ -2,52 +2,50 @@
 require_once 'helpers.php';
 require_once 'init.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $has_errors = [];
     $avatar = null;
+    $email = htmlspecialchars($_POST['email']);
+    $login = htmlspecialchars($_POST['login']);
+    $password = htmlspecialchars($_POST['password']);
+    $password_repeat = htmlspecialchars($_POST['password-repeat']);
+    
     // Проверка емэйла на пустоту, корректность и уникальность.
-    if (empty($_POST['email'])) {
+    if (empty($email)) {
         $has_errors['email'] = 'Введите email';
-    } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $has_errors['email'] = 'Некорректный email';
-    } else {
-        $sql_email = 'SELECT email FROM users';
+    } else {       
+        $sql_email = "SELECT email FROM users WHERE email = '$email'";
         $result_email = mysqli_query($con, $sql_email);
-        $all_emails = mysqli_fetch_all($result_email, MYSQLI_ASSOC);
-
-        if (in_array($_POST['email'], array_column($all_emails, 'email'))) {
+        $same_email = mysqli_fetch_assoc($result_email);
+        if (isset($same_email)) {
             $has_errors['email'] = 'Пользователь с таким email уже существует';
-        } else {
-            $email = $_POST['email'];
         };
     };
-
     // Проверка логина на пустоту и уникальность.
-    if (empty($_POST['login'])) {
+    if (empty($login)) {
         $has_errors['login'] = 'Введите логин';
-    } else {
-        $sql_login = 'SELECT username FROM users';
+    } else {        
+        $sql_login = "SELECT username FROM users WHERE username = '$login'";
         $result_login = mysqli_query($con, $sql_login);
-        $all_login = mysqli_fetch_all($result_login, MYSQLI_ASSOC);
-
-        if (in_array($_POST['login'], array_column($all_login, 'username'))) {
+        $same_login = mysqli_fetch_assoc($result_login);
+        if (isset($same_login)) {
             $has_errors['login'] = 'Пользователь с таким логином уже существует';
-        } else {
-            $login = $_POST['login'];
         };
     };
 
     // Проверка паролей на пустоту и совпадение
-    if (empty($_POST['password'])) {
+    if (empty($password)) {
         $has_errors['password'] = 'Введите пароль';
     };
-    if (empty($_POST['password-repeat'])) {
+    if (empty($password_repeat)) {
         $has_errors['password-repeat'] = 'Повторите пароль';
     };
-    if ($_POST['password-repeat'] != $_POST['password']) {
+    if ($password_repeat !== $password) {
         $has_errors['different-password'] = 'Пароли не совпадают';
     } else {
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $password = password_hash($password, PASSWORD_DEFAULT);
     };
     // Проверка аватакри на соответствие формату и размеру, сохранение на сервере   
     if (!empty($_FILES['photo']['name'])) {
