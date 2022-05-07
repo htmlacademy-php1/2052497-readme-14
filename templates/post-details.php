@@ -43,7 +43,7 @@
           <div class="comments">
             <form class="comments__form form" action="#" method="post">
               <div class="comments__my-avatar">
-                <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
+                <img class="comments__picture" src="<?=$user['avatar'];?>" alt="Аватар пользователя">
               </div>
               <div class="form__input-section form__input-section--error">
                 <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
@@ -62,7 +62,7 @@
                 <li class="comments__item user">
                   <div class="comments__avatar">
                     <a class="user__avatar-link" href="#">
-                      <img class="comments__picture" src="img/<?=htmlspecialchars($comment['avatar']);?>" alt="Аватар пользователя">
+                      <img class="comments__picture" src="<?=htmlspecialchars($comment['avatar']);?>" alt="Аватар пользователя">
                     </a>
                   </div>
                   <div class="comments__info">
@@ -88,13 +88,13 @@
         </div>
         <div class="post-details__user user">
           <div class="post-details__user-info user__info">
-            <div class="post-details__avatar user__avatar">
-              <a class="post-details__avatar-link user__avatar-link" href="#">
-                <img class="post-details__picture user__picture" src="img/<?=htmlspecialchars($post['avatar']);?>" alt="Аватар пользователя">
+            <div class="post__avatar-wrapper">
+              <a class="post__avatar-wrapper user__avatar-link" href="profile.php?user=<?=$post['user_id'];?>">
+                <img class="user__picture" src="<?=htmlspecialchars($post['avatar']);?>" alt="Аватар пользователя">
               </a>
             </div>
             <div class="post-details__name-wrapper user__name-wrapper">
-              <a class="post-details__name user__name" href="#">
+              <a class="post-details__name user__name" href="profile.php?user=<?=$post['user_id'];?>">
                 <span><?=htmlspecialchars($post['username']);?></span>
               </a>
               <time class="post-details__time user__time" datetime="<?=htmlspecialchars($post['dt_add']);?>">

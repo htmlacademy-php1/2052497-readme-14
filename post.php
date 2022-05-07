@@ -1,6 +1,7 @@
 <?php
 require_once 'helpers.php';
 require_once 'init.php';
+require_once 'session.php';
 
 $sql_types = 'SELECT * FROM type_content';
 $result = mysqli_query($con, $sql_types);
@@ -60,8 +61,8 @@ $post_info = include_template('post-' . $post['type'] . '.php', ['post' => $post
 $page_content = include_template('post-details.php', 
     ['post' => $post, 'type' => $types, 'post_info' => $post_info,
     'count_posts' => $count_posts, 'count_followers' => $count_followers,
-    'hashtags' => $hashtags, 'comments' => $comments]);
+    'hashtags' => $hashtags, 'comments' => $comments, 'user' => $user]);
 
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => $post['header']]);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => $post['header']]);
 print($layout_content);
 ?>

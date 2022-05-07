@@ -1,6 +1,7 @@
 <?php
 require_once 'helpers.php';
 require_once 'init.php';
+require_once 'session.php';
 
 // Запрос типов контента
 $sql_types = 'SELECT * FROM type_content';
@@ -10,6 +11,7 @@ $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $get_type_id = filter_input(INPUT_GET, 'id');
 if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get_type_id) {
     $get_type = 'text';
+    $get_type_id = 1;
 } else {
     foreach ($types as $type) {
         if ($type['id'] == $get_type_id) {
@@ -17,9 +19,9 @@ if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get
         };
     };
 };
-
+$has_errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_id = 1;
+    $user_id = $user['id'];
     $header = $_POST['header'] ?? null;
     $text = $_POST['text'] ?? null;
     $link = $_POST['link'] ?? null;
@@ -164,5 +166,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $page_content = include_template('adding-post.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'has_errors' => $has_errors, '_POST' => $_POST]);
 
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => 'НОВЫЙ ПОСТ']);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'НОВЫЙ ПОСТ']);
 print($layout_content);

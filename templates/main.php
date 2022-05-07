@@ -105,9 +105,9 @@
                 </div>
                 <footer class="post__footer">
                     <div class="post__author">
-                        <a class="post__author-link" href="#" title="Автор">
+                        <a class="post__author-link" href="profile.php?user=<?=$post['user_id'];?>" title="Автор">
                             <div class="post__avatar-wrapper">
-                                <img class="post__author-avatar" src="img/<?=htmlspecialchars($post['avatar']);?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="<?=htmlspecialchars($post['avatar']);?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['username']);?></b>

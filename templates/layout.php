@@ -83,14 +83,14 @@
     <header class="header">
         <div class="header__wrapper container">
             <div class="header__logo-wrapper">
-                <a class="header__logo-link" href="main.html">
+                <a class="header__logo-link" href="popular.php">
                     <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
                 </a>
                 <p class="header__topic">
                     micro blogging
                 </p>
             </div>
-            <?php if ($is_auth == 0) : ?>
+            <?php if (isset($user)) : ?>
             <form class="header__search-form form" action="#" method="get">
                 <div class="header__search">
                     <label class="visually-hidden">Поиск</label>
@@ -106,20 +106,20 @@
             <?php endif ;?>
             <div class="header__nav-wrapper">
                 <nav class="header__nav">
-                    <?php if ($is_auth == 0) : ?>
+                    <?php if (isset($user)) : ?>
                         <ul class="header__my-nav">
                             <li class="header__my-page header__my-page--popular">
-                                <a class="header__page-link header__page-link--active" title="Популярный контент">
+                                <a class="header__page-link <?=$_SERVER['REQUEST_URI'] === '/popular.php' ? 'header__page-link--active' : ''; ?>" href="popular.php" title="Популярный контент">
                                     <span class="visually-hidden">Популярный контент</span>
                                 </a>
                             </li>
                             <li class="header__my-page header__my-page--feed">
-                                <a class="header__page-link" href="feed.html" title="Моя лента">
+                                <a class="header__page-link <?=$_SERVER['REQUEST_URI'] === '/feed.php' ? 'header__page-link--active' : ''; ?>" href="feed.php" title="Моя лента">
                                     <span class="visually-hidden">Моя лента</span>
                                 </a>
                             </li>
                             <li class="header__my-page header__my-page--messages">
-                                <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                                <a class="header__page-link <?=$_SERVER['REQUEST_URI'] === '/messages.php' ? 'header__page-link--active' : ''; ?>" href="messages.php" title="Личные сообщения">
                                     <span class="visually-hidden">Личные сообщения</span>
                                 </a>
                             </li>
@@ -128,11 +128,11 @@
                             <li class="header__profile">
                                 <a class="header__profile-link" href="#">
                                     <div class="header__avatar-wrapper">
-                                        <img class="header__profile-avatar" src="img/userpic-medium.jpg" alt="Аватар профиля">
+                                        <img class="header__profile-avatar" src="<?=$user['avatar'];?>" alt="Аватар профиля">
                                     </div>
                                     <div class="header__profile-name">
                                         <span>
-                                            <?= $user_name ?>
+                                            <?=$user['username']; ?>
                                         </span>
                                         <svg class="header__link-arrow" width="10" height="6">
                                             <use xlink:href="#icon-arrow-right-ad"></use>
@@ -143,14 +143,14 @@
                                     <div class="header__profile-tooltip">
                                         <ul class="header__profile-nav">
                                             <li class="header__profile-nav-item">
-                                                <a class="header__profile-nav-link" href="#">
+                                                <a class="header__profile-nav-link" href="profile.php">
                                                     <span class="header__profile-nav-text">
                                                         Мой профиль
                                                     </span>
                                                 </a>
                                             </li>
                                             <li class="header__profile-nav-item">
-                                                <a class="header__profile-nav-link" href="#">
+                                                <a class="header__profile-nav-link" href="messages.php">
                                                     <span class="header__profile-nav-text">
                                                         Сообщения
                                                         <i class="header__profile-indicator">2</i>
@@ -159,7 +159,7 @@
                                             </li>
 
                                             <li class="header__profile-nav-item">
-                                                <a class="header__profile-nav-link" href="#">
+                                                <a class="header__profile-nav-link" href="logout.php">
                                                     <span class="header__profile-nav-text">
                                                         Выход
                                                     </span>
@@ -176,7 +176,7 @@
                     <?php else :; ?>
                         <ul class="header__user-nav">
                             <li class="header__authorization">
-                                <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                                <a class="header__user-button header__authorization-button button" href="index.php">Вход</a>
                             </li>
                             <li>
                                 <a class="header__user-button header__user-button--active header__register-button button" href="registration.php">Регистрация</a>
