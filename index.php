@@ -1,6 +1,7 @@
 <?php
 require_once 'helpers.php';
 require_once 'init.php';
+session_start();
 if (isset($_SESSION['username'])) {
     header("Location: /feed.php");
 };
