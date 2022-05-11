@@ -9,8 +9,9 @@ $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
 $sql_sort_type = "";
-if ($type_on = filter_input(INPUT_GET, 'type')) {
-    $sql_sort_type = "WHERE p.type_id = " . $type_on;
+$get_type_id = filter_input(INPUT_GET, 'type');
+if (in_array($get_type_id, array_column($types, 'id'))) {
+    $sql_sort_type = "WHERE p.type_id = " . $get_type_id;
 };
 
 $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, p.dt_add, t.type,
@@ -25,7 +26,7 @@ $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, p.dt_add, 
 $result = mysqli_query($con, $sql_posts);
 $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$page_content = include_template('main.php', ['posts' => $posts, 'types' => $types, 'type_on' => $type_on]);
+$page_content = include_template('main.php', ['posts' => $posts, 'types' => $types, 'get_type_id' => $get_type_id]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'readme: популярное']);
 print($layout_content);
 ?>

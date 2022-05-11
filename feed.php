@@ -8,6 +8,7 @@ $user_id = $user['id'];
 $sql_types = 'SELECT * FROM type_content';
 $result = mysqli_query($con, $sql_types);
 $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 $get_type = "";
 $get_type_id = filter_input(INPUT_GET, 'type');
 if ($get_type_id) {
@@ -28,10 +29,12 @@ foreach ($subscriptions as $subscriber) {
 $sql_sub_id = implode(", ", $subscriptions_id);
 // Фильтрация по типу контента
 $sql_sort_type = "";
-if (filter_input(INPUT_GET, 'type')) {
+if (in_array($get_type, array_column($types, 'type'))) {
     $sql_sort_type = " AND t.type = " . "'$get_type'";
 };
 // Запрос постов для ленты
+$posts = [];
+if(count($subscriptions) > 0 ) {
 $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t.type,
 p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
 COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
@@ -45,7 +48,7 @@ GROUP BY p.id, c.post_id, l.post_id
 ORDER BY p.dt_add ASC";
 $result_posts = mysqli_query($con, $sql_posts);
 $posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
-
+};
 
 $page_content = include_template('feed-user.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'posts' => $posts]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Readme: Лента']);
