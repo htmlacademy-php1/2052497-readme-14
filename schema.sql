@@ -22,9 +22,9 @@ CREATE TABLE type_content (
 CREATE TABLE posts (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    header TINYTEXT NOT NULL,
+    header TINYTEXT FULLTEXT NOT NULL,
     quote_author TINYTEXT NULL,
-    text_content TEXT NULL,
+    text_content TEXT FULLTEXT NULL,
     photo_content TINYTEXT NULL,
     video_content TINYTEXT NULL,
     link_content TINYTEXT NULL,
