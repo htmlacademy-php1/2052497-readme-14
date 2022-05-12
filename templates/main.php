@@ -37,13 +37,13 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?=$type == NULL ? "filters__button--active" : ""; ?>" href="?">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?=$get_type_id === NULL ? "filters__button--active" : ""; ?>" href="?">
                             <span>Все</span>
                         </a>
                     </li>
                     <?php foreach ($types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button <?=$type['id'] == $type_on ? "filters__button--active" : ""; ?>" href="?type=<?=$type['id']; ?>">
+                        <a class="filters__button filters__button--photo button <?=$type['id'] === $get_type_id ? "filters__button--active" : ""; ?>" href="?type=<?=$type['id']; ?>">
                             <span class="visually-hidden"><?=$type['name']; ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?=$type['type']; ?>"></use>
@@ -61,20 +61,20 @@
                     <h2><a href="post.php?id=<?=$post['id'];?>"><?=htmlspecialchars($post['header']);?></a></h2>
                 </header>
                 <div class="post__main">
-                    <?php if (htmlspecialchars($post['type']) == 'quote'): ?>
+                    <?php if (htmlspecialchars($post['type']) === 'quote'): ?>
                         <blockquote>
                           <p>
                           <?=htmlspecialchars($post['text_content']);?>
                           </p>
                           <cite><?=htmlspecialchars($post['quote_author']);?></cite>
                         </blockquote>
-                        <?php elseif (htmlspecialchars($post['type']) == 'text'): ?>
+                        <?php elseif (htmlspecialchars($post['type']) === 'text'): ?>
                             <?=limit_string_lenght(htmlspecialchars($post['text_content']))?>
                         <?php elseif (htmlspecialchars($post['type']) == 'photo'): ?>
                             <div class="post-photo__image-wrapper">
                               <img src="<?=htmlspecialchars($post['photo_content']);?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
-                        <?php elseif (htmlspecialchars($post['type']) == 'link'): ?>
+                        <?php elseif (htmlspecialchars($post['type']) === 'link'): ?>
                             <div class="post-link__wrapper">
                              <a class="post-link__external" href="http://<?=strip_tags($post['link_content']); ?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
@@ -88,7 +88,7 @@
                                    <span><?=strip_tags($post['link_content']);?></span>
                              </a>
                             </div>
-                        <?php elseif (htmlspecialchars($post['type']) == 'video'): ?>
+                        <?php elseif (htmlspecialchars($post['type']) === 'video'): ?>
                             <div class="post-video__block">
                                  <div class="post-video__preview">
                                     <?=embed_youtube_cover(htmlspecialchars($post['video_content'])); ?>
@@ -105,9 +105,9 @@
                 </div>
                 <footer class="post__footer">
                     <div class="post__author">
-                        <a class="post__author-link" href="#" title="Автор">
+                        <a class="post__author-link" href="profile.php?user=<?=$post['user_id'];?>" title="Автор">
                             <div class="post__avatar-wrapper">
-                                <img class="post__author-avatar" src="img/<?=htmlspecialchars($post['avatar']);?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="<?=htmlspecialchars($post['avatar']);?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['username']);?></b>

@@ -2,6 +2,10 @@
 require_once 'helpers.php';
 require_once 'init.php';
 
+if (isset($_SESSION['username'])) {
+    header("Location: /popular.php");
+};
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $has_errors = [];
     $avatar = null;
