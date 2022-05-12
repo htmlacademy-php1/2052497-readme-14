@@ -10,20 +10,11 @@ $sql_where = '';
 $sql_order = '';
 $posts = [];
 
-//Проверяем есть ли хештег в строке, фильтруем и записываем условие для БД
-if (isset($search) && $search[0] === '#') {
-    $hashtags_arr = explode(' ', $search);
-    foreach ($hashtags_arr as $key => $tag) {
-        if (preg_match($tags_pettern, $tag)) {
-            $hashtags[] = "'" . $tag . "'";
-        };
-    };
-    $filter_hashtags = implode(", ", $hashtags);
-    if (isset($filter_hashtags)) {
-        $sql_where = "WHERE h.name IN ($filter_hashtags)";
-        $sql_order = "ORDER BY p.dt_add ASC";
-    };
-}
+//Проверяем есть ли хештег и записываем условие для БД
+if (isset($search) && preg_match($tags_pettern, $search)) {    
+    $sql_where = "WHERE h.name = '$search'";
+    $sql_order = "ORDER BY p.dt_add ASC";    
+} 
 // Если поиск по тексту, записываем условие для БД
 elseif (isset($search) && empty($sql_where)) {
     $sql_where = "WHERE MATCH(p.header, p.text_content) AGAINST('$search')";
