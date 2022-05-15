@@ -7,6 +7,7 @@ $profile_id = $user['id'];
 $profile = [];
 $user_id = $user['id'];
 $your_profile = true;
+$has_errors = [];
 if (filter_input(INPUT_GET, 'user')) {
     $profile_id = htmlspecialchars($_GET['user']);
 };
@@ -78,7 +79,36 @@ else {
     $posts = mysqli_fetch_all($res_posts, MYSQLI_ASSOC);
 };
 
-$profile_content = include_template($page, ['subscribers' => $subscribers, 'likes' => $likes, 'posts' => $posts, 'profile' => $profile, 'con' => $con]);
+// Валидация и добавление комментария
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $new_comm = htmlspecialchars(trim($_POST['new_comm']));
+    $get_post_id = htmlspecialchars($_POST['post_id']);
+    if(empty($new_comm)) {
+        $has_errors['comm'] = "Поле не может быть пустым";
+    };
+    if (empty($has_errors) && strlen($new_comm) < 4) {
+        $has_errors['comm'] = "Комментарий не должен быть короче 4х символов";
+    }
+    if (empty($has_errors)) {
+        $check_post = "SELECT user_id FROM posts WHERE id = $get_post_id";
+        $res_check = mysqli_query($con, $check_post);
+        $check = mysqli_fetch_assoc($res_check);
+        $post_user_id = $check['user_id'];
+        if (isset($check)) {
+            $sql_comm = 'INSERT INTO comments (user_id, post_id, content) VALUES (?, ?, ?)';
+            $add_comm = mysqli_prepare($con, $sql_comm);
+            mysqli_stmt_bind_param($add_comm, 'sss', $user_id, $post_id, $new_comm);
+            $res_comm = mysqli_stmt_execute($add_comm);
+            header("Location: /profile.php?user=$post_user_id");
+            exit;
+        } else {
+            $has_errors['comm'] = "Пост не найден!";           
+        };
+    };
+
+};
+
+$profile_content = include_template($page, ['subscribers' => $subscribers, 'likes' => $likes, 'posts' => $posts, 'profile' => $profile, 'con' => $con, 'has_errors' => $has_errors]);
 $page_content = include_template('user-profile.php', ['profile_content' => $profile_content, 'profile' => $profile, 'your_profile' => $your_profile, 'get_type' => $get_type]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => htmlspecialchars($profile['username'])]);
 print($layout_content);

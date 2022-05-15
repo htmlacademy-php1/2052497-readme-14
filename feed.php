@@ -48,6 +48,7 @@ GROUP BY p.id, c.post_id, l.post_id
 ORDER BY p.dt_add ASC";
 $result_posts = mysqli_query($con, $sql_posts);
 $posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
+
 };
 
 $page_content = include_template('feed-user.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'posts' => $posts]);

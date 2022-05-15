@@ -119,14 +119,22 @@
               <?php endif; ?>
             </div>
           </div>
-          <form class="comments__form form" action="#" method="post">
-            <div class="comments__my-avatar">
-              <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
-            </div>
-            <textarea class="comments__textarea form__textarea" placeholder="Ваш комментарий"></textarea>
-            <label class="visually-hidden">Ваш комментарий</label>
-            <button class="comments__submit button button--green" type="submit">Отправить</button>
-          </form>
+          <form class="comments__form form" action="profile.php?user=15&comm=119" method="post">
+              <input type="hidden" name="post_id" value="<?=$post['id'];?>" />
+              <div class="comments__my-avatar">
+                <img class="comments__picture" src="<?=htmlspecialchars($user['avatar']);?>" alt="Аватар пользователя">
+              </div>
+              <div class="form__input-section <?= isset($has_errors['comm']) ? 'form__input-section--error' : ''; ?>">
+                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий" name="new_comm"></textarea>
+                <label class="visually-hidden">Ваш комментарий</label>
+                <button class="form__error-button button" type="button">!</button>
+                <div class="form__error-text">
+                  <h3 class="form__error-title">Ошибка валидации</h3>
+                  <p class="form__error-desc"><?= $has_errors['comm']; ?></p>
+                </div>
+              </div>
+              <button class="comments__submit button button--green" type="submit">Отправить</button>
+            </form>
         <?php endif; ?>
       </article>
     <?php endforeach; ?>
