@@ -1,4 +1,24 @@
 <?php
+// Запрос комментариев к посту
+function get_comments($post_id, $con){
+    $sql_comments = "SELECT c.content, c.dt_add, u.avatar, u.username FROM comments c
+    INNER JOIN users u ON u.id = c.user_id
+    WHERE c.post_id = $post_id";
+    $result_comments = mysqli_query($con, $sql_comments);
+    $comments = mysqli_fetch_all($result_comments, MYSQLI_ASSOC);
+    return $comments;
+};
+//Запрос хештегов для поста
+function get_hashtags($post_id, $con) {
+    $sql_hashtags = "SELECT h.name FROM post_hashtag ph
+    INNER JOIN hashtags h ON ph.hashtag_id = h.id
+    WHERE ph.post_id = $post_id";
+    $result_hashtags = mysqli_query($con, $sql_hashtags);
+    $hashtags = mysqli_fetch_all($result_hashtags, MYSQLI_ASSOC);
+    return $hashtags;
+};
+
+
 /** Показывает сколько прошло времени от временной метки в удобном формате **минут назад */
 function convert_date_toeasy_form($date) {
   

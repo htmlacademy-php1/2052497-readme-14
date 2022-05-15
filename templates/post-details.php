@@ -8,7 +8,7 @@
           <?=$post_info ?>
           <div class="post__indicators">
             <div class="post__buttons">
-              <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+              <a class="post__indicator post__indicator--likes button" href="likes.php?post_id=<?=$post['id'];?>" title="Лайк">
                 <svg class="post__indicator-icon" width="20" height="17">
                   <use xlink:href="#icon-heart"></use>
                 </svg>
@@ -41,17 +41,18 @@
             <?php endforeach;?>
           </ul>
           <div class="comments">
-            <form class="comments__form form" action="#" method="post">
+            <form class="comments__form form" action="post.php?id=<?=$post['id'];?>" method="post">
+              <input type="hidden" name="post_id" value="<?=$post['id'];?>" />
               <div class="comments__my-avatar">
                 <img class="comments__picture" src="<?=$user['avatar'];?>" alt="Аватар пользователя">
               </div>
-              <div class="form__input-section form__input-section--error">
-                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
+              <div class="form__input-section <?= isset($has_errors['comm']) ? 'form__input-section--error' : ''; ?>">
+                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий" name="new_comm"></textarea>
                 <label class="visually-hidden">Ваш комментарий</label>
                 <button class="form__error-button button" type="button">!</button>
                 <div class="form__error-text">
                   <h3 class="form__error-title">Ошибка валидации</h3>
-                  <p class="form__error-desc">Это поле обязательно к заполнению</p>
+                  <p class="form__error-desc"><?= $has_errors['comm']; ?></p>
                 </div>
               </div>
               <button class="comments__submit button button--green" type="submit">Отправить</button>
