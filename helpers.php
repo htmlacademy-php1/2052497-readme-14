@@ -18,6 +18,20 @@ function get_hashtags($post_id, $con) {
     return $hashtags;
 };
 
+function convert_date($date) {
+  
+    $diff = time() - strtotime($date);
+    if ($diff < 86400) {
+        $date = date("H:i", strtotime($date));
+        
+    } else {
+        $date = date("d M", strtotime($date));
+    }
+
+    return $date;
+};
+
+
 
 /** Показывает сколько прошло времени от временной метки в удобном формате **минут назад */
 function convert_date_toeasy_form($date) {

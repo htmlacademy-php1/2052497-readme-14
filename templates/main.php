@@ -8,7 +8,7 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link sorting__link--active" href="#">
+                        <a class="sorting__link <?=$get_order === 'view' ? 'sorting__link--active': ''; ?>" href="?<?=isset($get_type_id) ? "type=" . $get_type_id . "&" : ""; ?>order=view">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link" href="#">
+                        <a class="sorting__link <?=$get_order === 'likes' ? 'sorting__link--active': ''; ?>" href="?<?=isset($get_type_id) ? "type=" . $get_type_id . "&" : ""; ?>order=likes">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link" href="#">
+                        <a class="sorting__link <?=$get_order === 'date' ? 'sorting__link--active': ''; ?>" href="?<?=isset($get_type_id) ? "type=" . $get_type_id . "&" : ""; ?>order=date">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -124,14 +124,14 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?=$post['likes_count'];?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?=$post['comments_count'];?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                         </div>
@@ -139,6 +139,10 @@
                 </footer>
             </article>
             <?php endforeach; ?>
+        </div>
+        <div class="popular__page-links">
+            <a class="popular__page-link popular__page-link--prev button button--gray" <?=$page > 0 ? 'href="?page=' . $page - 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"': ''; ?>>Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" <?=$page - 1 < $count_page ? 'href="?page=' . $page + 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"': ''; ?>>Следующая страница</a>
         </div>
     </div>
 </section>

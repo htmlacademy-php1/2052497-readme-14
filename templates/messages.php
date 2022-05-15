@@ -6,7 +6,7 @@
             <ul class="messages__contacts-list tabs__list">
                 <? foreach ($penpals as $penpal) :; ?>
                     <li class="messages__contacts-item">
-                        <a class="messages__contacts-tab <?= $get_penpal_id === $penpal['id'] ? "messages__contacts-tab--active" : ""; ?> tabs__item tabs__item--active" href="?penpal=<?= $penpal['id']; ?>">
+                        <a class="messages__contacts-tab <?= $get_penpal === $penpal['id'] ? "messages__contacts-tab--active" : ""; ?> tabs__item tabs__item--active" href="?penpal=<?= $penpal['id']; ?>">
                             <div class="messages__avatar-wrapper">
                                 <img class="messages__avatar" src="<?= htmlspecialchars($penpal['avatar']); ?>" alt="Аватар пользователя">
                             </div>
@@ -15,12 +15,16 @@
                                     <?= htmlspecialchars($penpal['username']); ?>
                                 </span>
                                 <div class="messages__preview">
+                                    <?php if (isset($penpal['content'])):;?>
                                     <p class="messages__preview-text">
-                                        <?= htmlspecialchars($penpal['content']); ?>
+                                        <?= htmlspecialchars(mb_substr($penpal['content'], 0, 15)); ?>
                                     </p>
+                                    <?php endif;?>
+                                    <?php if (isset($penpal['dt_add'])):;?>
                                     <time class="messages__preview-time" datetime="2019-05-01T14:40">
-                                        <?= convert_date_toeasy_form($penpal['dt_add']); ?> назад
+                                        <?= convert_date($penpal['dt_add']); ?>
                                     </time>
+                                    <?php endif;?>
                                 </div>
                             </div>
                         </a>
@@ -268,7 +272,7 @@
             </div>
             <div class="comments">
                 <form class="comments__form form" action="" method="post">
-                    <input type="hidden" name="user_id" value="<?=$get_penpal_id;?>"/>
+                    <input type="hidden" name="user_id" value="<?=$get_penpal;?>"/>
                     <div class="comments__my-avatar">
                         <img class="comments__picture" src="<?=htmlspecialchars($user['avatar']);?>" alt="Аватар пользователя">
                     </div>
