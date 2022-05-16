@@ -1,14 +1,14 @@
 <?php
-    require_once 'helpers.php';
-    require_once 'init.php';
-    require_once 'session.php';
+require_once 'helpers.php';
+require_once 'init.php';
+require_once 'session.php';
 
-    // Запрос типов контента
-    $sql_types = 'SELECT * FROM type_content';
-    $result = mysqli_query($con, $sql_types);
-    $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // Определяем тип нового поста из парамета запроса
-    $get_type_id = filter_input(INPUT_GET, 'id');
+// Запрос типов контента
+$sql_types = 'SELECT * FROM type_content';
+$result = mysqli_query($con, $sql_types);
+$types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+// Определяем тип нового поста из парамета запроса
+$get_type_id = filter_input(INPUT_GET, 'id');
 if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get_type_id) {
     $type = current($types);
     $get_type = $type['type'];
@@ -21,7 +21,7 @@ if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get
     };
 };
 
-    $has_errors = [];
+$has_errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $user['id'];
     $header = $_POST['header'] ?? null;
@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     };
 };
 
-    $page_content = include_template('adding-post.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'has_errors' => $has_errors, '_POST' => $_POST]);
+$page_content = include_template('adding-post.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'has_errors' => $has_errors, '_POST' => $_POST]);
 
-    $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'НОВЫЙ ПОСТ']);
-    print($layout_content);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'НОВЫЙ ПОСТ']);
+print($layout_content);

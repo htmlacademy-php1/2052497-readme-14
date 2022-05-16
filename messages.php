@@ -1,23 +1,23 @@
 <?php
-    require_once 'helpers.php';
-    require_once 'init.php';
-    require_once 'session.php';
-    $user_id = $user['id'];
-    $get_penpal = '';
-    $penpal = [];
-    $messages = '';
-    $has_errors = [];
+require_once 'helpers.php';
+require_once 'init.php';
+require_once 'session.php';
+$user_id = $user['id'];
+$get_penpal = '';
+$penpal = [];
+$messages = '';
+$has_errors = [];
 
-    // Список пользавателей с кем была переписка
-    $sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar FROM messages m
+// Список пользавателей с кем была переписка
+$sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar FROM messages m
     LEFT JOIN users u ON (m.to_user_id = u.id OR m.from_user_id = u.id) AND u.id != $user_id
     WHERE m.to_user_id = $user_id OR m.from_user_id = $user_id
     GROUP by u.id
     ORDER BY m.id DESC";
-    $res_users = mysqli_query($con, $sql_users);
-    $penpals = mysqli_fetch_all($res_users, MYSQLI_ASSOC);
-    // Получаем id собеседника, проверяем есть ли история переписки
-if(filter_input(INPUT_GET, 'penpal')) {
+$res_users = mysqli_query($con, $sql_users);
+$penpals = mysqli_fetch_all($res_users, MYSQLI_ASSOC);
+// Получаем id собеседника, проверяем есть ли история переписки
+if (filter_input(INPUT_GET, 'penpal')) {
     $get_penpal = htmlspecialchars($_GET['penpal']);
     $sql_history_mess = "SELECT id FROM messages
     WHERE (from_user_id = $get_penpal and to_user_id = $user_id) OR (from_user_id = $user_id and to_user_id = $get_penpal)
@@ -28,14 +28,14 @@ if(filter_input(INPUT_GET, 'penpal')) {
     if (empty($check_penpal)) {
         $sql_user = "SELECT id, username, avatar FROM users WHERE id = $get_penpal";
         $res_user = mysqli_query($con, $sql_user);
-        $new_penpal = mysqli_fetch_assoc($res_user);   
+        $new_penpal = mysqli_fetch_assoc($res_user);
         $new_penpal['content'] = '';
-        $new_penpal['dt_add'] = '';   
-        array_unshift($penpals, $new_penpal);  
+        $new_penpal['dt_add'] = '';
+        array_unshift($penpals, $new_penpal);
     }
 };
 // Достаем Id первого пользователя
-if (empty($get_penpal)){
+if (empty($get_penpal)) {
     $penpal = current($penpals);
     $get_penpal = $penpal['id'];
 };
@@ -43,7 +43,7 @@ if (empty($get_penpal)){
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $new_message = htmlspecialchars(trim($_POST['new_message']));
     $get_user_id = htmlspecialchars($_POST['user_id']);
-    if(empty($new_message)) {
+    if (empty($new_message)) {
         $has_errors['message'] = "Поле не может быть пустым";
     };
     if (empty($has_errors)) {
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: " . $_SERVER['HTTP_REFERER']);
             }
         } else {
-            $has_errors['message'] = "Пользователь не найден!";           
+            $has_errors['message'] = "Пользователь не найден!";
         };
     };
 };
@@ -77,6 +77,6 @@ if (isset($get_penpal)) {
     $messages = mysqli_fetch_all($res_messages, MYSQLI_ASSOC);
 };
 
-    $page_content = include_template('messages.php', ['has_errors' => $has_errors, 'penpals' => $penpals, 'messages' => $messages, 'get_penpal' => $get_penpal, 'user' => $user]);
-    $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Сообщения']);
-    print($layout_content);
+$page_content = include_template('messages.php', ['has_errors' => $has_errors, 'penpals' => $penpals, 'messages' => $messages, 'get_penpal' => $get_penpal, 'user' => $user]);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Сообщения']);
+print($layout_content);

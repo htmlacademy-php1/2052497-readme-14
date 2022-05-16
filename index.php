@@ -1,11 +1,11 @@
 <?php
-    require_once 'helpers.php';
-    require_once 'init.php';
-    session_start();
+require_once 'helpers.php';
+require_once 'init.php';
+session_start();
 if (isset($_SESSION['username'])) {
     header("Location: /feed.php");
 };
-    $has_errors = [];
+$has_errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = htmlspecialchars($_POST['login']);
     $password = htmlspecialchars($_POST['password']);
@@ -32,5 +32,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     };
 };
 
-    $layout_content = include_template('login-layout.php', ['has_errors' => $has_errors]);
-    print($layout_content);
+$layout_content = include_template('login-layout.php', ['has_errors' => $has_errors]);
+print($layout_content);

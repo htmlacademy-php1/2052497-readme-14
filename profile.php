@@ -1,33 +1,33 @@
 <?php
-    require_once 'init.php';
-    require_once 'session.php';
-    require_once 'helpers.php';
+require_once 'init.php';
+require_once 'session.php';
+require_once 'helpers.php';
 
-    $profile_id = $user['id'];
-    $profile = [];
-    $user_id = $user['id'];
-    $has_errors = [];
+$profile_id = $user['id'];
+$profile = [];
+$user_id = $user['id'];
+$has_errors = [];
 if (filter_input(INPUT_GET, 'user')) {
     $profile_id = htmlspecialchars($_GET['user']);
 };
-    $your_profile = ($profile_id === $user_id);
+$your_profile = ($profile_id === $user_id);
 
-    // Запрос информации профиля 
-    $sql_profile = "SELECT u.id, u.username, u.dt_add, u.avatar, COUNT(DISTINCT s.follower_id) subscription, 
+// Запрос информации профиля 
+$sql_profile = "SELECT u.id, u.username, u.dt_add, u.avatar, COUNT(DISTINCT s.follower_id) subscription, 
     COUNT(DISTINCT p.id) posts, COUNT(DISTINCT s1.follower_id) followers
     FROM users u 
     LEFT JOIN posts p ON p.user_id = u.id
     LEFT JOIN subscriptions s ON s.user_id = u.id AND s.follower_id = $user_id
     LEFT JOIN subscriptions s1 ON s1.user_id = u.id
     WHERE u.id = $profile_id";
-    $res_profile = mysqli_query($con, $sql_profile);
-    $profile = mysqli_fetch_assoc($res_profile);
+$res_profile = mysqli_query($con, $sql_profile);
+$profile = mysqli_fetch_assoc($res_profile);
 
-    $get_type = 'posts';
-    $page = 'profile-posts.php';
-    $likes = [];
-    $posts = [];
-    $subscribers = [];
+$get_type = 'posts';
+$page = 'profile-posts.php';
+$likes = [];
+$posts = [];
+$subscribers = [];
 // Запрос списка лайков к постам профиля
 if (filter_input(INPUT_GET, 'type') === 'likes') {
     $get_type = 'likes';
@@ -75,7 +75,7 @@ else {
     $posts = mysqli_fetch_all($res_posts, MYSQLI_ASSOC);
 };
 
-    $profile_content = include_template($page, ['subscribers' => $subscribers, 'likes' => $likes, 'posts' => $posts, 'profile' => $profile, 'con' => $con, 'has_errors' => $has_errors]);
-    $page_content = include_template('user-profile.php', ['profile_content' => $profile_content, 'profile' => $profile, 'your_profile' => $your_profile, 'get_type' => $get_type]);
-    $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => htmlspecialchars($profile['username'])]);
-    print($layout_content);
+$profile_content = include_template($page, ['subscribers' => $subscribers, 'likes' => $likes, 'posts' => $posts, 'profile' => $profile, 'con' => $con, 'has_errors' => $has_errors]);
+$page_content = include_template('user-profile.php', ['profile_content' => $profile_content, 'profile' => $profile, 'your_profile' => $your_profile, 'get_type' => $get_type]);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => htmlspecialchars($profile['username'])]);
+print($layout_content);
