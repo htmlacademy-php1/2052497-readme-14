@@ -1,14 +1,14 @@
 <?php
-require_once 'init.php';
-require_once 'session.php';
-require_once 'helpers.php';
+    require_once 'init.php';
+    require_once 'session.php';
+    require_once 'helpers.php';
 
-$search = trim(filter_input(INPUT_GET, 'search'));
-$search = htmlspecialchars($search);
-$tags_pettern = '/^#[A-zА-яёЁ0-9]{1,15}$/u';
-$sql_where = '';
-$sql_order = '';
-$posts = [];
+    $search = trim(filter_input(INPUT_GET, 'search'));
+    $search = htmlspecialchars($search);
+    $tags_pettern = '/^#[A-zА-яёЁ0-9]{1,15}$/u';
+    $sql_where = '';
+    $sql_order = '';
+    $posts = [];
 
 //Проверяем есть ли хештег и записываем условие для БД
 if (isset($search) && preg_match($tags_pettern, $search)) {    
@@ -44,6 +44,6 @@ if ($posts) {
     $page = 'no-results.php';
 };
 
-$page_content = include_template($page, ['posts' => $posts, 'user' => $user, 'search' => $search]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Поиск']);
-print($layout_content);
+    $page_content = include_template($page, ['posts' => $posts, 'user' => $user, 'search' => $search]);
+    $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Поиск']);
+    print($layout_content);

@@ -1,8 +1,7 @@
 <?php
-session_start();
+    session_start();
 if (empty($_SESSION)) {
     header("Location: /index.php");
 } else {
     $user = $_SESSION;
 };
-?>

@@ -1,22 +1,22 @@
 <?php
-require_once 'helpers.php';
-require_once 'init.php';
-require_once 'session.php';
-$user_id = $user['id'];
-$get_penpal = '';
-$penpal = [];
-$messages = '';
-$has_errors = [];
+    require_once 'helpers.php';
+    require_once 'init.php';
+    require_once 'session.php';
+    $user_id = $user['id'];
+    $get_penpal = '';
+    $penpal = [];
+    $messages = '';
+    $has_errors = [];
 
-// Список пользавателей с кем была переписка
-$sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar FROM messages m
-LEFT JOIN users u ON (m.to_user_id = u.id OR m.from_user_id = u.id) AND u.id != $user_id
-WHERE m.to_user_id = $user_id OR m.from_user_id = $user_id
-GROUP by u.id
-ORDER BY m.id DESC";
-$res_users = mysqli_query($con, $sql_users);
-$penpals = mysqli_fetch_all($res_users, MYSQLI_ASSOC);
-// Получаем id собеседника, проверяем есть ли история переписки
+    // Список пользавателей с кем была переписка
+    $sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar FROM messages m
+    LEFT JOIN users u ON (m.to_user_id = u.id OR m.from_user_id = u.id) AND u.id != $user_id
+    WHERE m.to_user_id = $user_id OR m.from_user_id = $user_id
+    GROUP by u.id
+    ORDER BY m.id DESC";
+    $res_users = mysqli_query($con, $sql_users);
+    $penpals = mysqli_fetch_all($res_users, MYSQLI_ASSOC);
+    // Получаем id собеседника, проверяем есть ли история переписки
 if(filter_input(INPUT_GET, 'penpal')) {
     $get_penpal = htmlspecialchars($_GET['penpal']);
     $sql_history_mess = "SELECT id FROM messages
@@ -36,8 +36,8 @@ if(filter_input(INPUT_GET, 'penpal')) {
 };
 // Достаем Id первого пользователя
 if (empty($get_penpal)){
-$penpal = current($penpals);
-$get_penpal = $penpal['id'];
+    $penpal = current($penpals);
+    $get_penpal = $penpal['id'];
 };
 // Валидация и запись сообщения
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -69,14 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Запрос списка сообщений
 if (isset($get_penpal)) {
-$sql_messages = "SELECT m.content, m.dt_add, u.id AS user_id, u.avatar, u.username FROM messages m
-LEFT JOIN users u ON m.from_user_id = u.id
-WHERE m.from_user_id IN ($user_id, $get_penpal) AND m.to_user_id IN ($user_id, $get_penpal)
-ORDER BY m.id ASC";
-$res_messages = mysqli_query($con, $sql_messages);
-$messages = mysqli_fetch_all($res_messages, MYSQLI_ASSOC);
+    $sql_messages = "SELECT m.content, m.dt_add, u.id AS user_id, u.avatar, u.username FROM messages m
+    LEFT JOIN users u ON m.from_user_id = u.id
+    WHERE m.from_user_id IN ($user_id, $get_penpal) AND m.to_user_id IN ($user_id, $get_penpal)
+    ORDER BY m.id ASC";
+    $res_messages = mysqli_query($con, $sql_messages);
+    $messages = mysqli_fetch_all($res_messages, MYSQLI_ASSOC);
 };
 
-$page_content = include_template('messages.php', ['has_errors' => $has_errors, 'penpals' => $penpals, 'messages' => $messages, 'get_penpal' => $get_penpal, 'user' => $user]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Сообщения']);
-print($layout_content);
+    $page_content = include_template('messages.php', ['has_errors' => $has_errors, 'penpals' => $penpals, 'messages' => $messages, 'get_penpal' => $get_penpal, 'user' => $user]);
+    $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Сообщения']);
+    print($layout_content);

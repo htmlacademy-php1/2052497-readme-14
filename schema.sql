@@ -1,8 +1,8 @@
-CREATE DATABASE readme
-DEFAULT CHARACTER SET utf8
-DEFAULT COLLATE utf8_general_ci;
+    CREATE DATABASE readme
+    DEFAULT CHARACTER SET utf8
+    DEFAULT COLLATE utf8_general_ci;
 
-USE readme;
+    USE readme;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,

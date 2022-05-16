@@ -1,10 +1,10 @@
 <?php
-require_once 'helpers.php';
-require_once 'init.php';
-require_once 'session.php';
+    require_once 'helpers.php';
+    require_once 'init.php';
+    require_once 'session.php';
 
-$post_id = htmlspecialchars(filter_input(INPUT_GET, 'post_id'));
-$user_id = $user['id'];
+    $post_id = htmlspecialchars(filter_input(INPUT_GET, 'post_id'));
+    $user_id = $user['id'];
 
 if (isset($post_id)){
     //Проверка наличия поста и лайка
@@ -21,6 +21,5 @@ if (isset($post_id)){
     $res_like = mysqli_stmt_execute($add_like);  
     }
 };
-header("Location: " . $_SERVER['HTTP_REFERER']);
-exit;
-?>
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit;
