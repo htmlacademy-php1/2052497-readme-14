@@ -35,9 +35,10 @@ if(filter_input(INPUT_GET, 'penpal')) {
     }
 };
 // Достаем Id первого пользователя
+if (empty($get_penpal)){
 $penpal = current($penpals);
 $get_penpal = $penpal['id'];
-
+};
 // Валидация и запись сообщения
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $new_message = htmlspecialchars(trim($_POST['new_message']));
