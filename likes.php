@@ -16,15 +16,9 @@ if (isset($post_id)){
     $sql_like = 'INSERT INTO likes (user_id, post_id) VALUES (?, ?)';
     $add_like = mysqli_prepare($con, $sql_like);
     mysqli_stmt_bind_param($add_like, 'ss', $user_id, $post_id);
-    $res_like = mysqli_stmt_execute($add_like);
-    header("Location: " . $_SERVER['HTTP_REFERER']); 
-    exit;   
-    } else {
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+    $res_like = mysqli_stmt_execute($add_like);  
     }
-} else{
-    header("Location: " . $_SERVER['HTTP_REFERER']);
-    exit;
-}
+};
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit;
 ?>
