@@ -30,9 +30,9 @@
                     <form action="subscribe.php">
                         <div class="post-mini__user-buttons user__buttons">
                             <?php if ($subscriber['subscription'] === '1') :; ?>
-                                <button class="post-mini__user-button user__button user__button--subscription button button--quartz" name='unsub' value="<?= $subscriber['id']; ?>" type="submit">Отписаться</button>
+                                <button class="post-mini__user-button user__button user__button--subscription button button--quartz" name='user_id' value="<?= $subscriber['id']; ?>" type="submit">Отписаться</button>
                             <?php elseif ($subscriber['subscription'] === '0') :; ?>
-                                <button class="post-mini__user-button user__button user__button--subscription button button--main" name='sub' value="<?= $subscriber['id']; ?>" type="submit">Подписаться</button>
+                                <button class="post-mini__user-button user__button user__button--subscription button button--main" name='user_id' value="<?= $subscriber['id']; ?>" type="submit">Подписаться</button>
                             <?php endif; ?>
                         </div>
                     </form>
