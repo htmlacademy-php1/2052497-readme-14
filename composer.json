@@ -1,0 +1,20 @@
+{
+    "name": "emv/readme",
+    "description": "Readme блог",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Emv\\Readme\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Evgeniy"
+        }
+    ],
+    "require": {
+        "symfony/mailer": "^6.0",
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}
