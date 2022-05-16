@@ -7,12 +7,12 @@ $sql_types = 'SELECT * FROM type_content';
 $result = mysqli_query($con, $sql_types);
 $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $offset = '';
-$page = 0;
+$page = 1;
 // Сортрировка по дате, лайкам или просмотрам
 $get_order = 'view';
 $order = 'p.view_count';
-if (filter_input(INPUT_GET, 'order') === 'likes' || filter_input(INPUT_GET, 'order') === 'date'){
-    $get_order = htmlspecialchars(filter_input(INPUT_GET, 'order'));
+$get_order = htmlspecialchars(filter_input(INPUT_GET, 'order'));
+if (in_array($get_order, ['likes', 'date'], true) ){
     if ($get_order === 'likes') {
         $order = 'p.id';
     } elseif ($get_order === 'date') {
@@ -31,10 +31,10 @@ $sql_count_post = "SELECT COUNT(p.id) AS count_posts FROM posts p $sql_sort_type
 $res_count = mysqli_query($con, $sql_count_post);
 $count_posts = mysqli_fetch_assoc($res_count);
 $count_posts = $count_posts['count_posts'];
-$count_page = ceil($count_posts / 9);
+$count_page = ceil($count_posts / 9) - 1;
 if (filter_input(INPUT_GET, 'page')){
     $page = htmlspecialchars(filter_input(INPUT_GET, 'page'));
-    $offset = 'OFFSET ' . $page * 9;
+    $offset = 'OFFSET ' . ($page - 1) * 9;
 };
 
 $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, p.dt_add, t.type,

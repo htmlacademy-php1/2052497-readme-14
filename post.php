@@ -61,8 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $get_post_id = htmlspecialchars($_POST['post_id']);
     if(empty($new_comm)) {
         $has_errors['comm'] = "Поле не может быть пустым";
-    };
-    if (empty($has_errors) && strlen($new_comm) < 4) {
+    } elseif (strlen($new_comm) < 4) {
         $has_errors['comm'] = "Комментарий не должен быть короче 4х символов";
     }
     if (empty($has_errors)) {
@@ -83,10 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 };
 
-
-
 $post_info = include_template('post-' . $post['type'] . '.php', ['post' => $post]);
-
 $page_content = include_template('post-details.php', 
     ['post' => $post, 'type' => $types, 'post_info' => $post_info,
     'count_posts' => $count_posts, 'count_followers' => $count_followers,
