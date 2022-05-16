@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = htmlspecialchars($_POST['login']);
     $password = htmlspecialchars($_POST['password']);
     $password_repeat = htmlspecialchars($_POST['password-repeat']);
-    
+
     // Проверка емэйла на пустоту, корректность и уникальность.
     if (empty($email)) {
         $has_errors['email'] = 'Введите email';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $has_errors['email'] = 'Некорректный email';
-    } else {       
+    } else {
         $sql_email = "SELECT email FROM users WHERE email = '$email'";
         $result_email = mysqli_query($con, $sql_email);
         $same_email = mysqli_fetch_assoc($result_email);
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Проверка логина на пустоту и уникальность.
     if (empty($login)) {
         $has_errors['login'] = 'Введите логин';
-    } else {        
+    } else {
         $sql_login = "SELECT username FROM users WHERE username = '$login'";
         $result_login = mysqli_query($con, $sql_login);
         $same_login = mysqli_fetch_assoc($result_login);

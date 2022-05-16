@@ -11,10 +11,10 @@ $sql_order = '';
 $posts = [];
 
 //Проверяем есть ли хештег и записываем условие для БД
-if (isset($search) && preg_match($tags_pettern, $search)) {    
+if (isset($search) && preg_match($tags_pettern, $search)) {
     $sql_where = "WHERE h.name = '$search'";
-    $sql_order = "ORDER BY p.dt_add ASC";    
-} 
+    $sql_order = "ORDER BY p.dt_add ASC";
+}
 // Если поиск по тексту, записываем условие для БД
 elseif (isset($search) && empty($sql_where)) {
     $sql_where = "WHERE MATCH(p.header, p.text_content) AGAINST('$search')";

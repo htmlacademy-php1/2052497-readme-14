@@ -5,4 +5,3 @@ if (empty($_SESSION)) {
 } else {
     $user = $_SESSION;
 };
-?>
