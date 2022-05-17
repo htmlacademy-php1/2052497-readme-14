@@ -2,6 +2,7 @@
 require_once 'helpers.php';
 require_once 'init.php';
 require_once 'session.php';
+require_once 'vendor/autoload.php';
 
 // Запрос типов контента
 $sql_types = 'SELECT * FROM type_content';
@@ -158,6 +159,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             };
         };
         if ($new_post_id) {
+            $sql_followers = "SELECT u.username, u.email FROM users u
+            LEFT JOIN subscriptions s ON s.follower_id = u.id
+            WHERE s.user_id = $user_id";
+            $res_followers = mysqli_query($con, $sql_followers);
+            $followers = mysqli_fetch_all($res_followers, MYSQLI_ASSOC);
+            foreach ($followers as $follower) {
+                $message = new Swift_Message();
+                $message->setTo($follower['email']);
+                $message->setFrom("info@readme.ru");
+                $message->setSubject("Новая публикация от пользователя " . $user['username']);
+                $message->setBody("Здравствуйте, " . $follower['username'] . ". Пользователь " . $user['username'] . " только что опубликовал новую запись „" . $header . "“. Посмотрите её на странице пользователя: http://readme/profile.php?user=" . $user_id);
+                $mailer = new Swift_Mailer($transport);
+                $mailer->send($message);
+            };
             header("Location: /post.php?id=$new_post_id");
             exit;
         } else {
