@@ -127,7 +127,7 @@
                                 <span><?=$post['likes_count'];?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
-                            <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
+                            <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id'];?>#comments" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
@@ -141,7 +141,7 @@
             <?php endforeach; ?>
         </div>
         <div class="popular__page-links">
-            <a class="popular__page-link popular__page-link--prev button button--gray" <?=$page > 0 ? 'href="?page=' . $page - 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"': ''; ?>>Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--prev button button--gray" <?=$page > 1 ? 'href="?page=' . $page - 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"': ''; ?>>Предыдущая страница</a>
             <a class="popular__page-link popular__page-link--next button button--gray" <?=$page - 1 < $count_page ? 'href="?page=' . $page + 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"': ''; ?>>Следующая страница</a>
         </div>
     </div>

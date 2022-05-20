@@ -26,22 +26,21 @@
               </header>
               <?php if ($post['type'] === 'photo') :; ?>
                 <div class="post__main">
-                  <h2><a href="post.php?id=<?=$post['id'];?>"><?= htmlspecialchars($post['header']); ?></a></h2>
+                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
                   <div class="post-photo__image-wrapper">
                     <img src="<?= htmlspecialchars($post['photo_content']); ?>" alt="Фото от пользователя" width="760" height="396">
                   </div>
                 </div>
               <?php elseif ($post['type'] === 'text') :; ?>
                 <div class="post__main">
-                  <h2><a href="post.php?id=<?=$post['id'];?>"><?= htmlspecialchars($post['header']); ?></a></h2>
+                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
                   <p>
                     <?= htmlspecialchars($post['text_content']); ?>
                   </p>
-                  <a class="post-text__more-link" href="#">Читать далее</a>
                 </div>
               <?php elseif ($post['type'] === 'quote') :; ?>
                 <div class="post__main">
-                <h2><a href="post.php?id=<?=$post['id'];?>"><?= htmlspecialchars($post['header']); ?></a></h2>
+                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
                   <blockquote>
                     <p>
                       <?= htmlspecialchars($post['text_content']); ?>
@@ -51,7 +50,7 @@
                 </div>
               <?php elseif ($post['type'] === 'video') :; ?>
                 <div class="post__main">
-                <h2><a href="post.php?id=<?=$post['id'];?>"><?= htmlspecialchars($post['header']); ?></a></h2>
+                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
                   <div class="post-video__block">
                     <div class="post-video__preview">
                       <?= embed_youtube_video($post['video_content']); ?>
@@ -61,7 +60,7 @@
               <?php elseif ($post['type'] === 'link') :; ?>
                 <div class="post__main">
                   <div class="post-link__wrapper">
-                    <a class="post-link__external" href="<?=strip_tags($post['link_content']); ?>" title="Перейти по ссылке">
+                    <a class="post-link__external" href="<?= strip_tags($post['link_content']); ?>" title="Перейти по ссылке">
                       <div class="post-link__icon-wrapper">
                         <img src="img/logo-vita.jpg" alt="Иконка">
                       </div>
@@ -78,7 +77,7 @@
               <?php endif; ?>
               <footer class="post__footer post__indicators">
                 <div class="post__buttons">
-                  <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                  <a class="post__indicator post__indicator--likes button" href="likes.php?post_id=<?= $post['id']; ?>" title="Лайк">
                     <svg class="post__indicator-icon" width="20" height="17">
                       <use xlink:href="#icon-heart"></use>
                     </svg>
@@ -88,18 +87,18 @@
                     <span><?= $post['likes_count'] ?></span>
                     <span class="visually-hidden">количество лайков</span>
                   </a>
-                  <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
+                  <a class="post__indicator post__indicator--comments button" href="post.php?id=<?= $post['id']; ?>#comments" title="Комментарии">
                     <svg class="post__indicator-icon" width="19" height="17">
                       <use xlink:href="#icon-comment"></use>
                     </svg>
                     <span><?= $post['comments_count'] ?></span>
                     <span class="visually-hidden">количество комментариев</span>
                   </a>
-                  <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                  <a class="post__indicator post__indicator--repost button" href="repost.php?post_id=<?= $post['id']; ?>" title="Репост">
                     <svg class="post__indicator-icon" width="19" height="17">
                       <use xlink:href="#icon-repost"></use>
                     </svg>
-                    <span>5</span>
+                    <span><?= $post['reposts_count'] ?></span>
                     <span class="visually-hidden">количество репостов</span>
                   </a>
                 </div>

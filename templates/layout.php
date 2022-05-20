@@ -153,7 +153,9 @@
                                                 <a class="header__profile-nav-link" href="messages.php">
                                                     <span class="header__profile-nav-text">
                                                         Сообщения
-                                                        <i class="header__profile-indicator">2</i>
+                                                        <?php if ($user['new_message'] > 0):?>
+                                                        <i class="header__profile-indicator"><?=$user['new_message'];?></i>
+                                                        <?php endif;?>
                                                     </span>
                                                 </a>
                                             </li>

@@ -23,7 +23,8 @@ elseif (isset($search) && empty($sql_where)) {
 if (isset($sql_where)) {
     $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t.type,
     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
-    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
+    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count,
+    (SELECT COUNT(*) FROM posts  WHERE repost = p.id) AS reposts_count
     FROM posts p 
     INNER JOIN users u ON p.user_id = u.id 
     INNER JOIN type_content t ON p.type_id = t.id
@@ -36,6 +37,9 @@ if (isset($sql_where)) {
     $sql_order";
     $result_posts = mysqli_query($con, $sql_posts);
     $posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
+    foreach ($posts as $post) {
+        $post['hashtags'] = get_hashtags($con, $post['id']);        
+    };
 };
 
 if ($posts) {

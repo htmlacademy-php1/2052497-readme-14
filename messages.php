@@ -2,14 +2,15 @@
 require_once 'helpers.php';
 require_once 'init.php';
 require_once 'session.php';
-$user_id = $user['id'];
 $get_penpal = '';
 $penpal = [];
 $messages = '';
 $has_errors = [];
 
 // Список пользавателей с кем была переписка
-$sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar FROM messages m
+$sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar,
+    (SELECT COUNT(*) FROM messages m WHERE to_user_id = $user_id AND from_user_id = u.id AND m.new) AS new_message 
+    FROM messages m
     LEFT JOIN users u ON (m.to_user_id = u.id OR m.from_user_id = u.id) AND u.id != $user_id
     WHERE m.to_user_id = $user_id OR m.from_user_id = $user_id
     GROUP by u.id
@@ -75,7 +76,8 @@ if (isset($get_penpal)) {
     ORDER BY m.id ASC";
     $res_messages = mysqli_query($con, $sql_messages);
     $messages = mysqli_fetch_all($res_messages, MYSQLI_ASSOC);
-};
+    mysqli_query($con, "UPDATE messages SET `new` = 0 WHERE to_user_id = $user_id AND from_user_id = $get_penpal");
+    };
 
 $page_content = include_template('messages.php', ['has_errors' => $has_errors, 'penpals' => $penpals, 'messages' => $messages, 'get_penpal' => $get_penpal, 'user' => $user]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Сообщения']);

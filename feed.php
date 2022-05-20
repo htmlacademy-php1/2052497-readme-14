@@ -2,13 +2,8 @@
 require_once 'init.php';
 require_once 'session.php';
 require_once 'helpers.php';
-$user_id = $user['id'];
 
-// Запрос типов контента
-$sql_types = 'SELECT * FROM type_content';
-$result = mysqli_query($con, $sql_types);
-$types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
+$types = get_all_types($con);
 $get_type = "";
 $get_type_id = filter_input(INPUT_GET, 'type');
 if ($get_type_id) {
@@ -37,7 +32,8 @@ $posts = [];
 if (count($subscriptions) > 0) {
     $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t.type,
     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
-    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
+    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count,
+    (SELECT COUNT(*) FROM posts  WHERE repost = p.id) AS reposts_count
     FROM posts p 
     INNER JOIN users u ON p.user_id = u.id 
     INNER JOIN type_content t ON p.type_id = t.id
