@@ -5,8 +5,6 @@ require_once 'helpers.php';
 
 $profile_id = $user['id'];
 $profile = [];
-$user_id = $user['id'];
-$has_errors = [];
 if (filter_input(INPUT_GET, 'user')) {
     $profile_id = htmlspecialchars($_GET['user']);
 };
@@ -61,11 +59,12 @@ elseif (filter_input(INPUT_GET, 'type') === 'sub') {
 }
 //Запрос списка постов профиля
 else {
-    $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t.type,
+    $sql_posts = "SELECT p.id, u.id AS creator, u.username, u.avatar, p.header, p.dt_add, t.type,
     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
-    COUNT(DISTINCT c.id) comments_count, COUNT(DISTINCT l.user_id) likes_count
+    COUNT(DISTINCT c.id) comments_count, COUNT(DISTINCT l.user_id) likes_count,
+    (SELECT COUNT(*) FROM posts  WHERE repost = p.id) AS reposts_count
     FROM posts p 
-    INNER JOIN users u ON p.user_id = u.id 
+    INNER JOIN users u ON p.user_id = u.id OR p.creator = u.id 
     INNER JOIN type_content t ON p.type_id = t.id
     LEFT JOIN comments c ON c.post_id = p.id
     LEFT JOIN likes l ON l.post_id = p.id
@@ -75,7 +74,7 @@ else {
     $posts = mysqli_fetch_all($res_posts, MYSQLI_ASSOC);
 };
 
-$profile_content = include_template($page, ['subscribers' => $subscribers, 'likes' => $likes, 'posts' => $posts, 'profile' => $profile, 'con' => $con, 'has_errors' => $has_errors]);
+$profile_content = include_template($page, ['subscribers' => $subscribers, 'likes' => $likes, 'posts' => $posts, 'profile' => $profile, 'con' => $con]);
 $page_content = include_template('user-profile.php', ['profile_content' => $profile_content, 'profile' => $profile, 'your_profile' => $your_profile, 'get_type' => $get_type]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => htmlspecialchars($profile['username'])]);
 print($layout_content);

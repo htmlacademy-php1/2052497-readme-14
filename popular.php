@@ -3,11 +3,6 @@ require_once 'init.php';
 require_once 'session.php';
 require_once 'helpers.php';
 
-$sql_types = 'SELECT * FROM type_content';
-$result = mysqli_query($con, $sql_types);
-$types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-$offset = '';
-$page = 1;
 // Сортрировка по дате, лайкам или просмотрам
 $get_order = 'view';
 $order = 'p.view_count';
@@ -19,7 +14,9 @@ if (in_array($get_order, ['likes', 'date'], true)) {
         $order = 'p.dt_add';
     }
 };
+
 //Сортировка по типу контента
+$types = get_all_types($con);
 $sql_sort_type = "";
 $get_type_id = filter_input(INPUT_GET, 'type');
 if (in_array($get_type_id, array_column($types, 'id'))) {
@@ -27,6 +24,8 @@ if (in_array($get_type_id, array_column($types, 'id'))) {
 };
 
 // Пагинация 
+$offset = '';
+$page = 1;
 $sql_count_post = "SELECT COUNT(p.id) AS count_posts FROM posts p $sql_sort_type";
 $res_count = mysqli_query($con, $sql_count_post);
 $count_posts = mysqli_fetch_assoc($res_count);
@@ -36,20 +35,20 @@ if (filter_input(INPUT_GET, 'page')) {
     $page = htmlspecialchars(filter_input(INPUT_GET, 'page'));
     $offset = 'OFFSET ' . ($page - 1) * 9;
 };
-
+// Запрос постов
 $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, p.dt_add, t.type,
-            p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, 
-            COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
-            FROM posts p 
-            INNER JOIN users u ON p.user_id = u.id 
-            INNER JOIN type_content t ON p.type_id = t.id
-            LEFT JOIN comments c ON c.post_id = p.id
-            LEFT JOIN likes l ON l.post_id = p.id
-            $sql_sort_type
-            GROUP BY p.id, c.post_id, l.post_id        
-            ORDER BY $order DESC
-            LIMIT 9
-            $offset";
+        p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, 
+        COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
+        FROM posts p 
+        INNER JOIN users u ON p.user_id = u.id 
+        INNER JOIN type_content t ON p.type_id = t.id
+        LEFT JOIN comments c ON c.post_id = p.id
+        LEFT JOIN likes l ON l.post_id = p.id
+        $sql_sort_type
+        GROUP BY p.id, c.post_id, l.post_id        
+        ORDER BY $order DESC
+        LIMIT 9
+        $offset";
 $result = mysqli_query($con, $sql_posts);
 $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 

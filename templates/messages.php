@@ -9,6 +9,9 @@
                         <a class="messages__contacts-tab <?= $get_penpal === $penpal['id'] ? "messages__contacts-tab--active" : ""; ?> tabs__item tabs__item--active" href="?penpal=<?= $penpal['id']; ?>">
                             <div class="messages__avatar-wrapper">
                                 <img class="messages__avatar" src="<?= htmlspecialchars($penpal['avatar']); ?>" alt="Аватар пользователя">
+                                <?php if ($penpal['new_message'] > 0):?>
+                                <i class="messages__indicator"><?=$penpal['new_message'];?></i>
+                                <?php endif;?>
                             </div>
                             <div class="messages__info">
                                 <span class="messages__contact-name">

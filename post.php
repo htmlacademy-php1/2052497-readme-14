@@ -3,18 +3,17 @@ require_once 'helpers.php';
 require_once 'init.php';
 require_once 'session.php';
 
-$sql_types = 'SELECT * FROM type_content';
-$result = mysqli_query($con, $sql_types);
-$types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$post_id = htmlspecialchars(filter_input(INPUT_GET, 'id'));
 $has_errors = [];
-$user_id = $user['id'];
-if ($post_id = filter_input(INPUT_GET, 'id')) {
-    $sql_post_id = $post_id;
-};
+
 /**Информация о посте и его создателе */
 $sql_post = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t.type,
     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
-    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count
+    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count,
+    (SELECT COUNT(*) FROM posts p WHERE p.repost = $post_id) AS reposts_count,
+    (SELECT COUNT(*) FROM posts p WHERE p.user_id = u.id) AS posts_count,
+    (SELECT COUNT(*) FROM subscriptions s WHERE s.user_id = u.id) AS followers_count,
+    (SELECT COUNT(*) FROM subscriptions s WHERE s.follower_id = $user_id AND s.user_id = p.user_id)  AS subscription  
     FROM posts p 
     INNER JOIN users u ON p.user_id = u.id 
     INNER JOIN type_content t ON p.type_id = t.id
@@ -24,36 +23,28 @@ $sql_post = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, u.dt_add, t
     GROUP BY p.id, c.post_id, l.post_id";
 $result_post = mysqli_query($con, $sql_post);
 $post = mysqli_fetch_assoc($result_post);
-
-if ($post['id'] != $post_id) {
+// Счетчик просмотров
+if (isset($post)) {
+    mysqli_query($con, "UPDATE `posts` SET `view_count` = `view_count` + 1 WHERE `posts`.`id` = $post_id");
+    $post['view_count'] += 1;
+} else {
     die('Пост не найден');
 };
-
-$post_user_id = $post['user_id'];
-
-/**Количество постов у пользователя */
-$sql_count_post = "SELECT COUNT(id) amount FROM posts WHERE user_id = $post_user_id";
-$result_count_post = mysqli_query($con, $sql_count_post);
-$count_posts = mysqli_fetch_assoc($result_count_post);
-
-/**Количество подписчиков у пользователя */
-$sql_count_follow = "SELECT COUNT(follower_id) amount FROM subscriptions WHERE user_id = $post_user_id";
-$result_count_follow = mysqli_query($con, $sql_count_follow);
-$count_followers = mysqli_fetch_assoc($result_count_follow);
-
-//Массив с комментариями
-$sql_comments = "SELECT c.content, c.dt_add, u.avatar, u.username FROM comments c
-        INNER JOIN users u ON u.id = c.user_id
-        WHERE c.post_id = $post_id";
+// Массив с комментариями
+$limit = 'LIMIT 3';
+if (filter_input(INPUT_GET, 'all') === 'on'){
+    $limit = '';
+};
+$sql_comments = "SELECT c.id, c.content, c.dt_add, u.id AS user_id, u.avatar, u.username FROM comments c
+    INNER JOIN users u ON u.id = c.user_id
+    WHERE c.post_id = $post_id
+    ORDER BY c.id DESC
+    $limit";
 $result_comments = mysqli_query($con, $sql_comments);
 $comments = mysqli_fetch_all($result_comments, MYSQLI_ASSOC);
 
 //Массив с хештегами
-$sql_hashtags = "SELECT h.name FROM post_hashtag ph
-    INNER JOIN hashtags h ON ph.hashtag_id = h.id
-    WHERE ph.post_id = $post_id";
-$result_hashtags = mysqli_query($con, $sql_hashtags);
-$hashtags = mysqli_fetch_all($result_hashtags, MYSQLI_ASSOC);
+$hashtags = get_hashtags($con, $post['id']);
 
 // Валидация и добавление комментария
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -73,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $add_comm = mysqli_prepare($con, $sql_comm);
             mysqli_stmt_bind_param($add_comm, 'sss', $user_id, $post_id, $new_comm);
             $res_comm = mysqli_stmt_execute($add_comm);
-            header("Location: /profile.php?user=$post_user_id");
+            header("Location: /profile.php?user=" . $post['user_id']);
             exit;
         } else {
             $has_errors['comm'] = "Пост не найден!";
@@ -82,14 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 };
 
 $post_info = include_template('post-' . $post['type'] . '.php', ['post' => $post]);
-$page_content = include_template(
-    'post-details.php',
-    [
-        'post' => $post, 'type' => $types, 'post_info' => $post_info,
-        'count_posts' => $count_posts, 'count_followers' => $count_followers,
-        'hashtags' => $hashtags, 'comments' => $comments, 'user' => $user, 'has_errors' => $has_errors
-    ]
-);
-
+$page_content = include_template('post-details.php', ['post' => $post, 'post_info' => $post_info,
+    'hashtags' => $hashtags, 'comments' => $comments, 'user' => $user, 'has_errors' => $has_errors]);
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => $post['header']]);
 print($layout_content);

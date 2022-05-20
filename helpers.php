@@ -1,15 +1,44 @@
 <?php
-// Запрос комментариев к посту
-function get_comments($post_id, $con){
-    $sql_comments = "SELECT c.content, c.dt_add, u.avatar, u.username FROM comments c
+/**
+ * Запрос типов контента 
+ *
+ * @param $con mysqli Ресурс соединения
+ *
+ * @return $types Массив с типами контента
+ */
+function get_all_types($con) {
+$sql_types = 'SELECT * FROM type_content';
+$result = mysqli_query($con, $sql_types);
+$types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+return $types;
+};
+
+/**
+ * Запрос комментариев к посту
+ *
+ * @param $con mysqli Ресурс соединения
+ * @param array $post_id id поста для запроса комментариев
+ *
+ * @return $comments Массив с комментариями
+ */
+function get_comments($con, $post_id){
+    $sql_comments = "SELECT c.content, c.dt_add, u.id AS user_id, u.avatar, u.username FROM comments c
     INNER JOIN users u ON u.id = c.user_id
     WHERE c.post_id = $post_id";
     $result_comments = mysqli_query($con, $sql_comments);
     $comments = mysqli_fetch_all($result_comments, MYSQLI_ASSOC);
     return $comments;
 };
-//Запрос хештегов для поста
-function get_hashtags($post_id, $con) {
+
+/**
+ * Запрос Xeштегов  к посту
+ *
+ * @param $con mysqli Ресурс соединения
+ * @param array $post_id id поста для запроса xeштегов
+ *
+ * @return $hashtags Массив с хештегами
+ */
+function get_hashtags($con, $post_id) {
     $sql_hashtags = "SELECT h.name FROM post_hashtag ph
     INNER JOIN hashtags h ON ph.hashtag_id = h.id
     WHERE ph.post_id = $post_id";
@@ -18,6 +47,13 @@ function get_hashtags($post_id, $con) {
     return $hashtags;
 };
 
+/**
+ * Меняет формат даты: "H:i" если от даты прошло меньше 24 часов и "d M" если больше
+ *
+ * @param $date дата 
+ *
+ * @return $date Дата в нужном формате
+ */
 function convert_date($date) {
   
     $diff = time() - strtotime($date);
@@ -31,9 +67,13 @@ function convert_date($date) {
     return $date;
 };
 
-
-
-/** Показывает сколько прошло времени от временной метки в удобном формате **минут назад */
+/**
+ * Показывает сколько прошло времени от временной метки в удобном формате **минут назад 
+ *
+ * @param $date дата 
+ *
+ * @return $date разница в удобном формате
+ */
 function convert_date_toeasy_form($date) {
   
     $date = time() - strtotime($date);
@@ -66,7 +106,14 @@ function convert_date_toeasy_form($date) {
     return $date;
 };
 
-/**Ограничивае длину отображаемого текста до 300 символов в посте-плитке */
+/**
+ * Ограничивае длину отображаемого текста до 300 символов в посте-плитке  
+ *
+ * @param $post строка для обработки
+ * @param $lenght ограничение на длину строки, по умолчанию 300 символов  
+ *
+ * @return $post строка из 300 символов и "..."
+ */
 function limit_string_lenght($post, $lenght=300) {
     if (strlen($post) > $lenght) {
        $words = explode(' ', $post);

@@ -5,9 +5,8 @@ require_once 'init.php';
 if (isset($_SESSION['username'])) {
     header("Location: /popular.php");
 };
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $has_errors = [];
+$has_errors = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     $avatar = null;
     $email = htmlspecialchars($_POST['email']);
     $login = htmlspecialchars($_POST['login']);
@@ -97,5 +96,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 };
 
 $page_content = include_template('reg-user.php', ['has_errors' => $has_errors]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user_name' => $user_name, 'is_auth' => $is_auth, 'page_title' => 'readme: Регистрация']);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'page_title' => 'readme: Регистрация']);
 print($layout_content);
