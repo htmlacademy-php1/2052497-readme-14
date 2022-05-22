@@ -8,7 +8,7 @@
                     <li class="messages__contacts-item">
                         <a class="messages__contacts-tab <?= $get_penpal === $penpal['id'] ? "messages__contacts-tab--active" : ""; ?> tabs__item tabs__item--active" href="?penpal=<?= $penpal['id']; ?>">
                             <div class="messages__avatar-wrapper">
-                                <img class="messages__avatar" src="<?= htmlspecialchars($penpal['avatar']); ?>" alt="Аватар пользователя">
+                            <?=isset($penpal['avatar']) ? '<img class="messages__avatar" src="' . htmlspecialchars($penpal['avatar']) .'" alt="Аватар профиля">' : ''; ?>
                                 <?php if ($penpal['new_message'] > 0):?>
                                 <i class="messages__indicator"><?=$penpal['new_message'];?></i>
                                 <?php endif;?>
@@ -43,7 +43,7 @@
                             <div class="messages__info-wrapper">
                                 <div class="messages__item-avatar">
                                     <a class="messages__author-link messages__avatar" href="profile.php?user=<?= $message['user_id']; ?>">
-                                        <img class="messages__avatar" src="<?= htmlspecialchars($message['avatar']); ?>" alt="Аватар пользователя">
+                                    <?=isset($message['avatar']) ? '<img class="messages__avatar" src="' . htmlspecialchars($message['avatar']) .'" alt="Аватар профиля">' : ''; ?>
                                     </a>
                                 </div>
                                 <div class="messages__item-info">
@@ -66,7 +66,7 @@
                 <form class="comments__form form" action="" method="post">
                     <input type="hidden" name="user_id" value="<?= $get_penpal; ?>" />
                     <div class="comments__my-avatar">
-                        <img class="comments__picture" src="<?= htmlspecialchars($user['avatar']); ?>" alt="Аватар пользователя">
+                    <?=isset($user['avatar']) ? '<img class="comments__picture" src="' . htmlspecialchars($user['avatar']) .'" alt="Аватар профиля">' : ''; ?>
                     </div>
                     <div class="form__input-section <?= isset($has_errors['message']) ? 'form__input-section--error' : ''; ?>">
                         <textarea class="comments__textarea form__textarea form__input" placeholder="Ваше сообщение" name="new_message"><?= htmlspecialchars(filter_input(INPUT_POST, 'new_message')); ?></textarea>

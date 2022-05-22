@@ -25,13 +25,13 @@ htmlspecialchars(filter_input(INPUT_GET, 'header'));
 $has_errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $user['id'];
-    $header = htmlspecialchars(filter_input(INPUT_GET, 'header'));
-    $text = htmlspecialchars(filter_input(INPUT_GET, 'text'));
-    $link = htmlspecialchars(filter_input(INPUT_GET, 'link'));
-    $video = htmlspecialchars(filter_input(INPUT_GET, 'video'));
-    $photo_url = htmlspecialchars(filter_input(INPUT_GET, 'photo_url'));
-    $str_hashtags = htmlspecialchars(filter_input(INPUT_GET, 'hashtags'));
-    $quote_author = htmlspecialchars(filter_input(INPUT_GET, 'quote_author'));
+    $header = htmlspecialchars(filter_input(INPUT_POST, 'header'));
+    $text = htmlspecialchars(filter_input(INPUT_POST, 'text'));
+    $link = htmlspecialchars(filter_input(INPUT_POST, 'link'));
+    $video = htmlspecialchars(filter_input(INPUT_POST, 'video'));
+    $photo_url = htmlspecialchars(filter_input(INPUT_POST, 'photo_url'));
+    $str_hashtags = htmlspecialchars(filter_input(INPUT_POST, 'hashtags'));
+    $quote_author = htmlspecialchars(filter_input(INPUT_POST, 'quote-author'));
     $tags_pettern = '/^#[A-zА-яёЁ0-9]{1,15}$/u';
     $has_errors = [];
     $rules_photo = [

@@ -12,7 +12,7 @@
                             <header class="post__header post__author">
                                 <a class="post__author-link" href="profile.php?user=<?= htmlspecialchars($post['user_id']); ?>" title="Автор">
                                     <div class="post__avatar-wrapper">
-                                        <img class="user__picture" src="<?= htmlspecialchars($post['avatar']); ?>" alt="Аватар пользователя" width="60" height="60">
+                                        <?= isset($post['avatar']) ? '<img class="user__picture" src="' . htmlspecialchars($post['avatar']) . '" alt="Аватар профиля" width="60" height="60">' : ''; ?>
                                     </div>
                                     <div class="post__info">
                                         <b class="post__author-name"><?= htmlspecialchars($post['username']); ?></b>
@@ -27,65 +27,73 @@
                                         <img src="<?= htmlspecialchars($post['photo_content']); ?>" alt="Фото от пользователя" width="760" height="396">
                                     </div>
                                 <?php elseif ($post['type'] === 'text') :; ?>
-                                    <p>
-                                        <?= htmlspecialchars($post['text_content']); ?>
-                                    </p>
+                                    <div class="post-details__image-wrapper post-text">
+                                        <div class="post__main">
+                                            <p>
+                                                <?= htmlspecialchars($post['text_content']); ?>
+                                            </p>
+                                        </div>
+                                    </div>
                                 <?php elseif ($post['type'] === 'quote') :; ?>
-                                    <blockquote>
-                                        <p>
-                                            <?= htmlspecialchars($post['text_content']); ?>
-                                        </p>
-                                        <cite><?= $post['quote_author']; ?></cite>
-                                    </blockquote>
+                                    <div class="post-details__image-wrapper post-quote">
+                                        <div class="post__main">
+                                            <blockquote>
+                                                <p>
+                                                    <?= htmlspecialchars($post['text_content']); ?>
+                                                </p>
+                                                <cite><?= htmlspecialchars($post['quote_author']); ?></cite>
+                                            </blockquote>
+                                        </div>
+                                    </div>
                                 <?php elseif ($post['type'] === 'video') :; ?>
                                     <div class="post-details__image-wrapper post-photo__image-wrapper">
                                         <?= embed_youtube_video($post['video_content']); ?>
                                     </div>
-                                <?php elseif ($post['type'] === 'link') :; ?>  
-                                        <div class="post-link__wrapper">
-                                            <a class="post-link__external" href="<?= htmlspecialchars($post['link_content']); ?>" title="Перейти по ссылке">
-                                                <div class="post-link__icon-wrapper">
-                                                    <img src="img/logo-vita.jpg" alt="Иконка">
-                                                </div>
-                                                <div class="post-link__info">
-                                                    <h3><?= htmlspecialchars($post['header']); ?></h3>
-                                                    <span><?= $post['link_content']; ?></span>
-                                                </div>
-                                                <svg class="post-link__arrow" width="11" height="16">
-                                                    <use xlink:href="#icon-arrow-right-ad"></use>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                <?php endif; ?>
-                            </div>
-                                <footer class="post__footer post__indicators">
-                                    <div class="post__buttons">
-                                        <a class="post__indicator post__indicator--likes button" href="likes.php?post_id=<?= $post['id']; ?>" title="Лайк">
-                                            <svg class="post__indicator-icon" width="20" height="17">
-                                                <use xlink:href="#icon-heart"></use>
+                                <?php elseif ($post['type'] === 'link') :; ?>
+                                    <div class="post-link__wrapper">
+                                        <a class="post-link__external" href="<?= htmlspecialchars($post['link_content']); ?>" title="Перейти по ссылке">
+                                            <div class="post-link__icon-wrapper">
+                                                <img src="img/logo-vita.jpg" alt="Иконка">
+                                            </div>
+                                            <div class="post-link__info">
+                                                <h3><?= htmlspecialchars($post['header']); ?></h3>
+                                                <span><?= $post['link_content']; ?></span>
+                                            </div>
+                                            <svg class="post-link__arrow" width="11" height="16">
+                                                <use xlink:href="#icon-arrow-right-ad"></use>
                                             </svg>
-                                            <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                                                <use xlink:href="#icon-heart-active"></use>
-                                            </svg>
-                                            <span><?= $post['likes_count'] ?></span>
-                                            <span class="visually-hidden">количество лайков</span>
-                                        </a>
-                                        <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id'];?>#comments" title="Комментарии">
-                                            <svg class="post__indicator-icon" width="19" height="17">
-                                                <use xlink:href="#icon-comment"></use>
-                                            </svg>
-                                            <span><?= $post['comments_count'] ?></span>
-                                            <span class="visually-hidden">количество комментариев</span>
-                                        </a>
-                                        <a class="post__indicator post__indicator--repost button" href="repost.php?post_id=<?= $post['id']; ?>" title="Репост">
-                                            <svg class="post__indicator-icon" width="19" height="17">
-                                                <use xlink:href="#icon-repost"></use>
-                                            </svg>
-                                            <span><?= $post['reposts_count'] ?></span>
-                                            <span class="visually-hidden">количество репостов</span>
                                         </a>
                                     </div>
-                                </footer>
+                                <?php endif; ?>
+                            </div>
+                            <footer class="post__footer post__indicators">
+                                <div class="post__buttons">
+                                    <a class="post__indicator post__indicator--likes button" href="likes.php?post_id=<?= $post['id']; ?>" title="Лайк">
+                                        <svg class="post__indicator-icon" width="20" height="17">
+                                            <use xlink:href="#icon-heart"></use>
+                                        </svg>
+                                        <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
+                                            <use xlink:href="#icon-heart-active"></use>
+                                        </svg>
+                                        <span><?= $post['likes_count'] ?></span>
+                                        <span class="visually-hidden">количество лайков</span>
+                                    </a>
+                                    <a class="post__indicator post__indicator--comments button" href="post.php?id=<?= $post['id']; ?>#comments" title="Комментарии">
+                                        <svg class="post__indicator-icon" width="19" height="17">
+                                            <use xlink:href="#icon-comment"></use>
+                                        </svg>
+                                        <span><?= $post['comments_count'] ?></span>
+                                        <span class="visually-hidden">количество комментариев</span>
+                                    </a>
+                                    <a class="post__indicator post__indicator--repost button" href="repost.php?post_id=<?= $post['id']; ?>" title="Репост">
+                                        <svg class="post__indicator-icon" width="19" height="17">
+                                            <use xlink:href="#icon-repost"></use>
+                                        </svg>
+                                        <span><?= $post['reposts_count'] ?></span>
+                                        <span class="visually-hidden">количество репостов</span>
+                                    </a>
+                                </div>
+                            </footer>
                         </article>
                     <?php endforeach; ?>
                 </div>

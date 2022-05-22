@@ -68,7 +68,7 @@ else {
     INNER JOIN type_content t ON p.type_id = t.id
     LEFT JOIN comments c ON c.post_id = p.id
     LEFT JOIN likes l ON l.post_id = p.id
-    WHERE p.user_id = $user_id
+    WHERE p.user_id = $profile_id
     GROUP BY p.id, c.post_id, l.post_id
     ORDER BY p.id DESC";
     $res_posts = mysqli_query($con, $sql_posts);
