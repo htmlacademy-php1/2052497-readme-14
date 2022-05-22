@@ -59,17 +59,18 @@ elseif (filter_input(INPUT_GET, 'type') === 'sub') {
 }
 //Запрос списка постов профиля
 else {
-    $sql_posts = "SELECT p.id, u.id AS creator, u.username, u.avatar, p.header, p.dt_add, t.type,
+    $sql_posts = "SELECT p.id, u.id AS creator, u.username, u.avatar, p.header, u.dt_add, t.type,
     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
-    COUNT(DISTINCT c.id) comments_count, COUNT(DISTINCT l.user_id) likes_count,
+    COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count,
     (SELECT COUNT(*) FROM posts  WHERE repost = p.id) AS reposts_count
     FROM posts p 
-    INNER JOIN users u ON p.user_id = u.id OR p.creator = u.id 
+    INNER JOIN users u ON p.user_id = u.id 
     INNER JOIN type_content t ON p.type_id = t.id
     LEFT JOIN comments c ON c.post_id = p.id
     LEFT JOIN likes l ON l.post_id = p.id
-    WHERE p.user_id = $profile_id
-    GROUP BY p.id, c.post_id, l.post_id";
+    WHERE p.user_id = $user_id
+    GROUP BY p.id, c.post_id, l.post_id
+    ORDER BY p.id DESC";
     $res_posts = mysqli_query($con, $sql_posts);
     $posts = mysqli_fetch_all($res_posts, MYSQLI_ASSOC);
 };

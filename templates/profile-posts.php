@@ -91,7 +91,7 @@
           </div>
           <ul class="post__tags">
             <?php foreach (get_hashtags($con, $post['id']) as $hashtag) :; ?>
-              <li><a href="search.php?search=<?= $hashtag['name']; ?>"><?= htmlspecialchars($hashtag['name']); ?></a></li>
+              <li><a href="search.php?search=<?=str_replace('#', '%23', $hashtag['name']); ?>"><?= htmlspecialchars($hashtag['name']); ?></a></li>
             <?php endforeach; ?>
           </ul>
         </footer>

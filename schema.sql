@@ -22,18 +22,21 @@ CREATE TABLE type_content (
 CREATE TABLE posts (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    header TINYTEXT FULLTEXT NOT NULL,
+    header TINYTEXT NOT NULL,
     quote_author TINYTEXT NULL,
-    text_content TEXT FULLTEXT NULL,
+    text_content TEXT NULL,
     photo_content TINYTEXT NULL,
     video_content TINYTEXT NULL,
     link_content TINYTEXT NULL,
-    view_count INT NOT NULL,
+    view_count int(11) DEFAULT '0',
     user_id INT NOT NULL, 
     FOREIGN KEY (user_id) REFERENCES users (id),
     type_id INT NOT NULL,
-    FOREIGN KEY (type_id) REFERENCES type_content (id)
+    FOREIGN KEY (type_id) REFERENCES type_content (id),
+    repost int(64) DEFAULT NULL,
+    creator int(11) DEFAULT NULL
 );
+CREATE FULLTEXT INDEX search ON posts(header, text_content);
 
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -68,7 +71,8 @@ CREATE TABLE messages (
     from_user_id INT NOT NULL,
     FOREIGN KEY (from_user_id) REFERENCES users (id),
     to_user_id INT NOT NULL,
-    FOREIGN KEY (to_user_id) REFERENCES users (id)
+    FOREIGN KEY (to_user_id) REFERENCES users (id),
+    new tinyint(1) NOT NULL DEFAULT '1'
 );
 
 CREATE TABLE hashtags (

@@ -37,7 +37,7 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?=$get_type_id === NULL ? "filters__button--active" : ""; ?>" href="?">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?=empty($get_type_id) ? "filters__button--active" : ""; ?>" href="?">
                             <span>Все</span>
                         </a>
                     </li>

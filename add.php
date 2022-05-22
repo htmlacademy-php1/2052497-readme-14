@@ -21,17 +21,17 @@ if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get
         };
     };
 };
-
+htmlspecialchars(filter_input(INPUT_GET, 'header'));
 $has_errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $user['id'];
-    $header = $_POST['header'] ?? null;
-    $text = $_POST['text'] ?? null;
-    $link = $_POST['link'] ?? null;
-    $video = $_POST['video'] ?? null;
-    $photo_url = $_POST['photo_url'] ?? null;
-    $str_hashtags = $_POST['hashtags'] ?? null;
-    $quote_author = $_POST['quote-author'] ?? null;
+    $header = htmlspecialchars(filter_input(INPUT_GET, 'header'));
+    $text = htmlspecialchars(filter_input(INPUT_GET, 'text'));
+    $link = htmlspecialchars(filter_input(INPUT_GET, 'link'));
+    $video = htmlspecialchars(filter_input(INPUT_GET, 'video'));
+    $photo_url = htmlspecialchars(filter_input(INPUT_GET, 'photo_url'));
+    $str_hashtags = htmlspecialchars(filter_input(INPUT_GET, 'hashtags'));
+    $quote_author = htmlspecialchars(filter_input(INPUT_GET, 'quote_author'));
     $tags_pettern = '/^#[A-zА-яёЁ0-9]{1,15}$/u';
     $has_errors = [];
     $rules_photo = [
