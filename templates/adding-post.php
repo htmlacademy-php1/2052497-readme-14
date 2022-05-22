@@ -29,7 +29,7 @@
                   <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section <?= isset($has_errors['header']) ? 'form__input-section--error' : ''; ?>">
-                      <input class="adding-post__input form__input" id="photo-heading" type="text" name="header" placeholder="Введите заголовок" value="<?= $_POST['header'] ?? null; ?>">
+                      <input class="adding-post__input form__input" id="photo-heading" type="text" name="header" placeholder="Введите заголовок" value="<?= htmlspecialchars(filter_input(INPUT_POST, 'header')); ?>">
                       <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                       <div class="form__error-text">
                         <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -41,7 +41,7 @@
                     <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                       <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
                       <div class="form__input-section <?= isset($has_errors['content']) ? 'form__input-section--error' : ''; ?>">
-                        <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name='text' placeholder="Введите текст публикации"><?= $_POST['text'] ?? null; ?></textarea>
+                        <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name='text' placeholder="Введите текст публикации"><?=htmlspecialchars(filter_input(INPUT_POST, 'text'));?></textarea>
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                           <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -53,7 +53,7 @@
                     <div class="adding-post__input-wrapper form__textarea-wrapper">
                       <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
                       <div class="form__input-section <?= isset($has_errors['content']) ? 'form__input-section--error' : ''; ?>">
-                        <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name='text' placeholder="Текст цитаты"><?= $_POST['text'] ?? null; ?></textarea>
+                        <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name='text' placeholder="Текст цитаты"><?=htmlspecialchars(filter_input(INPUT_POST, 'header'));?></textarea>
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                           <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -65,7 +65,7 @@
                     <div class="adding-post__input-wrapper form__input-wrapper">
                       <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
                       <div class="form__input-section <?= isset($has_errors['content']) ? 'form__input-section--error' : ''; ?>">
-                        <input class="adding-post__input form__input" id="photo-url" type="text" name="photo_url" placeholder="Введите ссылку" value="<?= $_POST['photo_url'] ?? null; ?>">
+                        <input class="adding-post__input form__input" id="photo-url" type="text" name="photo_url" placeholder="Введите ссылку" value="<?=htmlspecialchars(filter_input(INPUT_POST, 'photo_url'));?>">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                           <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -77,7 +77,7 @@
                     <div class="adding-post__input-wrapper form__input-wrapper">
                       <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
                       <div class="form__input-section <?= isset($has_errors['content']) ? 'form__input-section--error' : ''; ?>">
-                        <input class="adding-post__input form__input" id="video-url" type="text" name="video" placeholder="Введите ссылку" value="<?= $_POST['video'] ?? null; ?>">
+                        <input class="adding-post__input form__input" id="video-url" type="text" name="video" placeholder="Введите ссылку" value="<?=htmlspecialchars(filter_input(INPUT_POST, 'video'));?>">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                           <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -89,7 +89,7 @@
                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                       <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
                       <div class="form__input-section <?= isset($has_errors['content']) ? 'form__input-section--error' : ''; ?>">
-                        <input class="adding-post__input form__input" id="post-link" type="text" name="link" placeholder="Введите ссылку" value="<?= $_POST['link'] ?? null; ?>">
+                        <input class="adding-post__input form__input" id="post-link" type="text" name="link" placeholder="Введите ссылку" value="<?=strip_tags(filter_input(INPUT_POST, 'link'));?>">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                           <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -102,7 +102,7 @@
                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                       <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
                       <div class="form__input-section <?= isset($has_errors['author']) ? 'form__input-section--error' : ''; ?>">
-                        <input class="adding-post__input form__input" id="quote-author" type="text" name="quote-author" placeholder="Автор цитаты" value="<?= $_POST['quote-author'] ?? null; ?>">
+                        <input class="adding-post__input form__input" id="quote-author" type="text" name="quote-author" placeholder="Автор цитаты" value="<?=htmlspecialchars(filter_input(INPUT_POST, 'quote-author'));?>">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                           <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -114,7 +114,7 @@
                   <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-tags">Теги</label>
                     <div class="form__input-section <?= isset($has_errors['hashtag']) ? 'form__input-section--error' : ''; ?>">
-                      <input class="adding-post__input form__input" id="photo-tags" type="text" name="hashtags" placeholder="Введите теги" value="<?= $_POST['hashtags'] ?? null; ?>">
+                      <input class="adding-post__input form__input" id="photo-tags" type="text" name="hashtags" placeholder="Введите теги" value="<?=htmlspecialchars(filter_input(INPUT_POST, 'hashtags')); ?>">
                       <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                       <div class="form__error-text">
                         <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -136,13 +136,6 @@
               </div>
               <?php if ($get_type === 'photo') :; ?>
                 <div class="adding-post__input-file-container form__input-container form__input-container--file">
-                  <!--<div class="adding-post__input-file-wrapper form__input-file-wrapper">
-                      <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="photo" title=" ">
-                        <div class="form__file-zone-text">
-                          <span>Перетащите фото сюда</span>
-                        </div>
-                      </div>-->
                   <label for="userpic-file-photo" class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button">
                     <input hidden type="file" name="photo" id="userpic-file-photo">
                     <span>Выбрать фото</span>

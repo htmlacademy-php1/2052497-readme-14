@@ -37,14 +37,14 @@
           </div>
           <ul class="post__tags">
             <?php foreach ($hashtags as $hashtag) :; ?>
-              <li><a href="search.php?search=<?= $hashtag['name']; ?>"><?= $hashtag['name']; ?></a></li>
+              <li><a href="search.php?search=<?=str_replace('#', '%23', $hashtag['name']); ?>"><?= htmlspecialchars($hashtag['name']); ?></a></li>
             <?php endforeach; ?>
           </ul>
           <div class="comments" id="comments">
             <form class="comments__form form" action="post.php?id=<?= $post['id']; ?>" method="post">
               <input type="hidden" name="post_id" value="<?= $post['id']; ?>" />
               <div class="comments__my-avatar">
-                <img class="comments__picture" src="<?= $user['avatar']; ?>" alt="Аватар пользователя">
+              <?=isset($user['avatar']) ? '<img class="comments__picture" src="' . htmlspecialchars($user['avatar']) .'" alt="Аватар профиля">' : ''; ?>
               </div>
               <div class="form__input-section <?= isset($has_errors['comm']) ? 'form__input-section--error' : ''; ?>">
                 <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий" name="new_comm"></textarea>
@@ -63,7 +63,7 @@
                   <li class="comments__item user" id="comment<?= $comment['id']; ?>">
                     <div class="comments__avatar">
                       <a class="user__avatar-link" href="profile.php?user=<?= $comment['user_id']; ?>">
-                        <img class="comments__picture" src="<?= htmlspecialchars($comment['avatar']); ?>" alt="Аватар пользователя">
+                      <?=isset($comment['avatar']) ? '<img class="comments__picture" src="' . htmlspecialchars($comment['avatar']) .'" alt="Аватар профиля">' : ''; ?>
                       </a>
                     </div>
                     <div class="comments__info">
@@ -93,7 +93,7 @@
           <div class="post-details__user-info user__info">
             <div class="post__avatar-wrapper">
               <a class="post__avatar-wrapper user__avatar-link" href="profile.php?user=<?= $post['user_id']; ?>">
-                <img class="user__picture" src="<?= htmlspecialchars($post['avatar']); ?>" alt="Аватар пользователя">
+              <?=isset($post['avatar']) ? '<img class="user__picture" src="' . htmlspecialchars($post['avatar']) .'" alt="Аватар профиля">' : ''; ?>
               </a>
             </div>
             <div class="post-details__name-wrapper user__name-wrapper">

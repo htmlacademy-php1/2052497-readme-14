@@ -16,7 +16,7 @@
               <header class="post__header post__author">
                 <a class="post__author-link" href="profile.php?user=<?= htmlspecialchars($post['user_id']); ?>" title="Автор">
                   <div class="post__avatar-wrapper">
-                    <img class="user__picture" src="<?= htmlspecialchars($post['avatar']); ?>" alt="Аватар пользователя" width="60" height="60">
+                    <?= isset($post['avatar']) ? '<img class="user__picture" src="' . htmlspecialchars($post['avatar']) . '" alt="Аватар профиля" width="60" height="60">' : ''; ?>
                   </div>
                   <div class="post__info">
                     <b class="post__author-name"><?= htmlspecialchars($post['username']); ?></b>
@@ -32,21 +32,25 @@
                   </div>
                 </div>
               <?php elseif ($post['type'] === 'text') :; ?>
-                <div class="post__main">
-                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
-                  <p>
-                    <?= htmlspecialchars($post['text_content']); ?>
-                  </p>
-                </div>
-              <?php elseif ($post['type'] === 'quote') :; ?>
-                <div class="post__main">
-                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
-                  <blockquote>
+                <div class="post-details__image-wrapper post-text">
+                  <div class="post__main">
+                    <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
                     <p>
                       <?= htmlspecialchars($post['text_content']); ?>
                     </p>
-                    <cite><?= $post['quote_author']; ?></cite>
-                  </blockquote>
+                  </div>
+                </div>
+              <?php elseif ($post['type'] === 'quote') :; ?>
+                <div class="post-details__image-wrapper post-quote">
+                  <h2><a href="post.php?id=<?= $post['id']; ?>"><?= htmlspecialchars($post['header']); ?></a></h2>
+                  <div class="post__main">
+                    <blockquote>
+                      <p>
+                        <?= htmlspecialchars($post['text_content']); ?>
+                      </p>
+                      <cite><?= htmlspecialchars($post['quote_author']); ?></cite>
+                    </blockquote>
+                  </div>
                 </div>
               <?php elseif ($post['type'] === 'video') :; ?>
                 <div class="post__main">

@@ -91,35 +91,35 @@
                 </p>
             </div>
             <?php if (isset($user)) : ?>
-            <form class="header__search-form form" action="search.php" method="get">
-                <div class="header__search">
-                    <label class="visually-hidden">Поиск</label>
-                    <input class="header__search-input form__input" type="search" name="search" value="<?=htmlspecialchars(filter_input(INPUT_GET, 'search')) ?? NULL ;?>">
-                    <button class="header__search-button button" type="submit">
-                        <svg class="header__search-icon" width="18" height="18">
-                            <use xlink:href="#icon-search"></use>
-                        </svg>
-                        <span class="visually-hidden">Начать поиск</span>
-                    </button>
-                </div>
-            </form>
-            <?php endif ;?>
+                <form class="header__search-form form" action="search.php" method="get">
+                    <div class="header__search">
+                        <label class="visually-hidden">Поиск</label>
+                        <input class="header__search-input form__input" type="search" name="search" value="<?= htmlspecialchars(filter_input(INPUT_GET, 'search')); ?>">
+                        <button class="header__search-button button" type="submit">
+                            <svg class="header__search-icon" width="18" height="18">
+                                <use xlink:href="#icon-search"></use>
+                            </svg>
+                            <span class="visually-hidden">Начать поиск</span>
+                        </button>
+                    </div>
+                </form>
+            <?php endif; ?>
             <div class="header__nav-wrapper">
                 <nav class="header__nav">
                     <?php if (isset($user)) : ?>
                         <ul class="header__my-nav">
                             <li class="header__my-page header__my-page--popular">
-                                <a class="header__page-link <?=$_SERVER['REQUEST_URI'] === '/popular.php' ? 'header__page-link--active' : ''; ?>" href="popular.php" title="Популярный контент">
+                                <a class="header__page-link <?= $_SERVER['REQUEST_URI'] === '/popular.php' ? 'header__page-link--active' : ''; ?>" href="popular.php" title="Популярный контент">
                                     <span class="visually-hidden">Популярный контент</span>
                                 </a>
                             </li>
                             <li class="header__my-page header__my-page--feed">
-                                <a class="header__page-link <?=$_SERVER['REQUEST_URI'] === '/feed.php' ? 'header__page-link--active' : ''; ?>" href="feed.php" title="Моя лента">
+                                <a class="header__page-link <?= $_SERVER['REQUEST_URI'] === '/feed.php' ? 'header__page-link--active' : ''; ?>" href="feed.php" title="Моя лента">
                                     <span class="visually-hidden">Моя лента</span>
                                 </a>
                             </li>
                             <li class="header__my-page header__my-page--messages">
-                                <a class="header__page-link <?=$_SERVER['REQUEST_URI'] === '/messages.php' ? 'header__page-link--active' : ''; ?>" href="messages.php" title="Личные сообщения">
+                                <a class="header__page-link <?= $_SERVER['REQUEST_URI'] === '/messages.php' ? 'header__page-link--active' : ''; ?>" href="messages.php" title="Личные сообщения">
                                     <span class="visually-hidden">Личные сообщения</span>
                                 </a>
                             </li>
@@ -128,11 +128,11 @@
                             <li class="header__profile">
                                 <a class="header__profile-link" href="#">
                                     <div class="header__avatar-wrapper">
-                                        <img class="header__profile-avatar" src="<?=$user['avatar'];?>" alt="Аватар профиля">
+                                    <?=isset($user['avatar']) ? '<img class="header__profile-avatar" src="' . htmlspecialchars($user['avatar']) .'" alt="Аватар профиля">' : ''; ?>                                        
                                     </div>
                                     <div class="header__profile-name">
                                         <span>
-                                            <?=$user['username']; ?>
+                                            <?= htmlspecialchars($user['username']); ?>
                                         </span>
                                         <svg class="header__link-arrow" width="10" height="6">
                                             <use xlink:href="#icon-arrow-right-ad"></use>
@@ -153,9 +153,9 @@
                                                 <a class="header__profile-nav-link" href="messages.php">
                                                     <span class="header__profile-nav-text">
                                                         Сообщения
-                                                        <?php if ($user['new_message'] > 0):?>
-                                                        <i class="header__profile-indicator"><?=$user['new_message'];?></i>
-                                                        <?php endif;?>
+                                                        <?php if ($user['new_message'] > 0) : ?>
+                                                            <i class="header__profile-indicator"><?= $user['new_message']; ?></i>
+                                                        <?php endif; ?>
                                                     </span>
                                                 </a>
                                             </li>
@@ -246,9 +246,6 @@
             </div>
         </div>
     </footer>
-    <!--<script src="libs/dropzone.js"></script>
-<script src="js/dropzone-settings.js"></script>
-<script src="js/main.js"></script>-->
 </body>
 
 </html>

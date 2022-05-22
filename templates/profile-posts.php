@@ -3,20 +3,20 @@
     <h2 class="visually-hidden">Публикации</h2>
     <?php foreach ($posts as $post) :; ?>
       <article class="profile__post post post-photo">
-        <?php if ($post['creator'] === $_SESSION['id']) : ?>
+        <?php if ($post['creator'] === $profile['id']) : ?>
           <header class="post__header">
             <h2><?= htmlspecialchars($post['header']); ?></h2>
           </header>
         <?php else : ?>
           <header class="post__header">
             <div class="post__author">
-              <a class="post__author-link" href="profile.php?user=<?=$post['creator'];?>" title="Автор">
+              <a class="post__author-link" href="profile.php?user=<?= $post['creator']; ?>" title="Автор">
                 <div class="post__avatar-wrapper post__avatar-wrapper--repost">
-                  <img class="post__author-avatar" src="<?= htmlspecialchars($post['avatar']); ?>" alt="Аватар пользователя">
+                  <?= isset($post['avatar']) ? '<img class="post__author-avatar" src="' . htmlspecialchars($post['avatar']) . '" alt="Аватар профиля">' : ''; ?>
                 </div>
                 <div class="post__info">
                   <b class="post__author-name">Репост: <?= htmlspecialchars($post['username']); ?></b>
-                  <time class="post__time" datetime="<?=$post['dt_add']; ?>"><?= convert_date_toeasy_form($post['dt_add']); ?> назад</time>
+                  <time class="post__time" datetime="<?= $post['dt_add']; ?>"><?= convert_date_toeasy_form($post['dt_add']); ?> назад</time>
                 </div>
               </a>
             </div>
@@ -29,15 +29,24 @@
             </div>
           <?php elseif ($post['type'] === 'text') :; ?>
             <p>
-              <?= htmlspecialchars($post['text_content']); ?>
-            </p>
+            <div class="post-details__image-wrapper post-text">
+              <div class="post__main">
+                <p>
+                  <?= htmlspecialchars($post['text_content']); ?>
+                </p>
+              </div>
+            </div>
           <?php elseif ($post['type'] === 'quote') :; ?>
-            <blockquote>
-              <p>
-                <?= htmlspecialchars($post['text_content']); ?>
-              </p>
-              <cite><?= $post['quote_author']; ?></cite>
-            </blockquote>
+            <div class="post-details__image-wrapper post-quote">
+              <div class="post__main">
+                <blockquote>
+                  <p>
+                    <?= htmlspecialchars($post['text_content']); ?>
+                  </p>
+                  <cite><?= htmlspecialchars($post['quote_author']); ?></cite>
+                </blockquote>
+              </div>
+            </div>
           <?php elseif ($post['type'] === 'video') :; ?>
             <div class="post-details__image-wrapper post-photo__image-wrapper">
               <?= embed_youtube_video($post['video_content']); ?>
@@ -91,7 +100,7 @@
           </div>
           <ul class="post__tags">
             <?php foreach (get_hashtags($con, $post['id']) as $hashtag) :; ?>
-              <li><a href="search.php?search=<?= $hashtag['name']; ?>"><?= htmlspecialchars($hashtag['name']); ?></a></li>
+              <li><a href="search.php?search=<?= str_replace('#', '%23', $hashtag['name']); ?>"><?= htmlspecialchars($hashtag['name']); ?></a></li>
             <?php endforeach; ?>
           </ul>
         </footer>

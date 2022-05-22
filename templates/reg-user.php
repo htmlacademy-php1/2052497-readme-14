@@ -10,7 +10,7 @@
           <div class="registration__input-wrapper form__input-wrapper">
             <label class="registration__label form__label" for="registration-email">Электронная почта <span class="form__input-required">*</span></label>
             <div class="form__input-section <?=isset($has_errors['email']) ? 'form__input-section--error' : ''; ?>">
-              <input class="registration__input form__input" id="registration-email" type="email" name="email" placeholder="Укажите эл.почту" value="<?= $_POST['email'] ?? null; ?>">
+              <input class="registration__input form__input" id="registration-email" type="email" name="email" placeholder="Укажите эл.почту" value="<?=htmlspecialchars(filter_input(INPUT_POST, 'email'));?>">
               <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
               <div class="form__error-text">
                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -21,7 +21,7 @@
           <div class="registration__input-wrapper form__input-wrapper">
             <label class="registration__label form__label" for="registration-login">Логин <span class="form__input-required">*</span></label>
             <div class="form__input-section <?=isset($has_errors['login']) ? 'form__input-section--error' : ''; ?>">
-              <input class="registration__input form__input" id="registration-login" type="text" name="login" placeholder="Укажите логин" value="<?= $_POST['login'] ?? null; ?>">
+              <input class="registration__input form__input" id="registration-login" type="text" name="login" placeholder="Укажите логин" value="<?=htmlspecialchars(filter_input(INPUT_POST, 'login'));?>">
               <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
               <div class="form__error-text">
                 <h3 class="form__error-title">Заголовок сообщения</h3>

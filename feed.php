@@ -41,7 +41,7 @@ if (count($subscriptions) > 0) {
     LEFT JOIN likes l ON l.post_id = p.id
     WHERE p.user_id IN ($sql_sub_id)$sql_sort_type
     GROUP BY p.id, c.post_id, l.post_id
-    ORDER BY p.dt_add ASC";
+    ORDER BY p.dt_add DESC";
     $result_posts = mysqli_query($con, $sql_posts);
     $posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
 };

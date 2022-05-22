@@ -7,7 +7,7 @@
                     <div class="post-mini__user-info user__info">
                         <div class="post-mini__avatar user__avatar">
                             <a class="user__avatar-link" href="profile.php?user=<?= $subscriber['id']; ?>">
-                                <img class="post-mini__avatar user__avatar" src="<?= htmlspecialchars($subscriber['avatar']); ?>" alt="Аватар пользователя">
+                                <?=isset($subscriber['avatar']) ? '<img class="post-mini__avatar user__avatar" src="' . htmlspecialchars($subscriber['avatar']) .'" alt="Аватар профиля">' : ''; ?>
                             </a>
                         </div>
                         <div class="post-mini__name-wrapper user__name-wrapper">

@@ -8,17 +8,17 @@ INSERT INTO type_content (name, type)
 
 --Добавляем пользователей
 INSERT INTO users (email, username, password, avatar)
-    VALUES ('larisa@gmail.com','Лариса','Aa145236','userpic-larisa-small.jpg'),
-           ('vlad666@ya.ru','Влад','145236Aa','userpic.jpg'),
-           ('VICTOR@icloud.com', 'Виктор', 'qwerty', 'userpic-mark.jpg');
+    VALUES ('larisa@rrr.com','Лариса','$2y$10$MGoX5l1C01QfpkiKkIZDG.diT.0z82ONwfLT6nEmcCdl4f11ibQ/.','\\img\\userpic-larisa.jpg'),
+           ('em@ioud.com','Влад','$2y$10$MGoX5l1C01QfpkiKkIZDG.diT.0z82ONwfLT6nEmcCdl4f11ibQ/.','\\img\\userpic-big.jpg'),
+           ('met@id.com', 'Виктор', '$2y$10$MGoX5l1C01QfpkiKkIZDG.diT.0z82ONwfLT6nEmcCdl4f11ibQ/.', '\\img\\userpic-petro.jpg');
 
 --Добавляем посты
-INSERT INTO posts (header, quote_author, text_content, photo_content, video_content, link_content, view_count, user_id, type_id)
-    VALUES ('Цитата', 'Сергей Есенин', 'Мы в жизни любим только раз, а после ищем лишь похожих', NULL, NULL, NULL, '1', '1', '2'),
-            ('Игра престолов', NULL, 'Не могу дождаться начала финального сезона своего любимого сериала!', NULL, NULL, NULL, '10', '2', '1'),
-            ('Наконец, обработал фотки!', NULL, NULL, 'rock-medium.jpg', NULL, NULL, '15', '3', '3'),
-            ('Моя мечта', NULL, NULL, 'coast-medium.jpg', NULL, NULL, '23', '1', '3'),
-            ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru', '6', '2', '5');
+INSERT INTO posts (header, quote_author, text_content, photo_content, video_content, link_content, user_id, type_id)
+    VALUES ('Цитата', 'Сергей Есенин', 'Мы в жизни любим только раз, а после ищем лишь похожих', NULL, NULL, NULL, '1', '2'),
+            ('Игра престолов', NULL, 'Не могу дождаться начала финального сезона своего любимого сериала!', NULL, NULL, NULL, '2', '1'),
+            ('Наконец, обработал фотки!', NULL, NULL, '\\img\\rock-medium.jpg', NULL, NULL, '3', '3'),
+            ('Моя мечта', NULL, NULL, '\\img\\coast-medium.jpg', NULL, NULL, '1', '3'),
+            ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru', '2', '5');
 
 --Добавляем комментарии
 INSERT INTO comments (content, user_id, post_id)
