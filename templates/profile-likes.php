@@ -16,7 +16,7 @@
                             </a>
                             <div class="post-mini__action">
                                 <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                                <time class="post-mini__time user__additional" datetime="2014-03-20T20:20"><?= convert_date_toeasy_form($profile['dt_add']); ?> назад</time>
+                                <time class="post-mini__time user__additional" datetime="<?=$like['dt_add'];?>"><?= convert_date_toeasy_form($like['dt_add']); ?> назад</time>
                             </div>
                         </div>
                     </div>

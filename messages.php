@@ -9,12 +9,22 @@ $messages = [];
 $has_errors = [];
 
 // Список пользавателей с кем была переписка
-$sql_users = "SELECT DISTINCT m.id, m.content, m.dt_add, u.id, u.username, u.avatar,
-    (SELECT COUNT(*) FROM messages m WHERE to_user_id = $user_id AND from_user_id = u.id AND m.new) AS new_message 
-    FROM messages m
-    LEFT JOIN users u ON (m.to_user_id = u.id OR m.from_user_id = u.id) AND u.id != $user_id
-    WHERE m.to_user_id = $user_id OR m.from_user_id = $user_id 
-    ORDER BY m.id DESC";
+$sql_users = "SELECT u.id, u.username, u.avatar,
+    (SELECT m.content FROM messages m
+    WHERE u.id = m.to_user_id OR u.id = m.from_user_id
+    ORDER BY m.id DESC
+    LIMIT 1) AS content,
+    (SELECT m.dt_add FROM messages m
+    WHERE u.id = m.to_user_id OR u.id = m.from_user_id
+    ORDER BY m.id DESC
+    LIMIT 1) AS dt_add,
+    (SELECT COUNT(*) FROM messages m 
+    WHERE m.from_user_id = u.id AND m.to_user_id = $user_id AND m.new) AS new_message
+    FROM users u
+    LEFT JOIN messages m ON u.id = m.from_user_id OR u.id = m.to_user_id
+    WHERE (m.to_user_id = $user_id AND m.to_user_id != u.id) OR (m.from_user_id = $user_id AND m.from_user_id != u.id)
+    GROUP BY u.id
+    ORDER BY dt_add DESC";
 $res_users = mysqli_query($con, $sql_users);
 $penpals = mysqli_fetch_all($res_users, MYSQLI_ASSOC);
 // Получаем id собеседника, проверяем есть ли история переписки
@@ -33,6 +43,7 @@ if (filter_input(INPUT_GET, 'penpal')) {
         $new_penpal = mysqli_fetch_assoc($res_user);
         $new_penpal['content'] = '';
         $new_penpal['dt_add'] = '';
+        $new_penpal['new_message'] = 0;
         array_unshift($penpals, $new_penpal);
     }
 };

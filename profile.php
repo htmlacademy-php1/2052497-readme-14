@@ -56,12 +56,13 @@ if (filter_input(INPUT_GET, 'type') === 'likes') {
     $res_subscriptions = mysqli_query($con, $sql_subscriptions);
     $subscribers = mysqli_fetch_all($res_subscriptions, MYSQLI_ASSOC);
 } else {
-    $sql_posts = "SELECT p.id, u.id AS creator, u.username, u.avatar, p.header, u.dt_add, t.type,
+    $sql_posts = "SELECT DISTINCT p.id, p.creator AS creator, p.header, p.dt_add, t.type,
     p.quote_author, p.text_content, p.photo_content, p.video_content, p.link_content, p.view_count, 
     COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT l.user_id) AS likes_count,
-    (SELECT COUNT(*) FROM posts  WHERE repost = p.id) AS reposts_count
-    FROM posts p 
-    INNER JOIN users u ON p.user_id = u.id 
+    (SELECT COUNT(*) FROM posts  WHERE repost = p.id) AS reposts_count,
+    (SELECT u.avatar FROM users u WHERE u.id = p.creator) AS avatar,
+    (SELECT u.username FROM users u WHERE u.id = p.creator) AS username    
+    FROM posts p
     INNER JOIN type_content t ON p.type_id = t.id
     LEFT JOIN comments c ON c.post_id = p.id
     LEFT JOIN likes l ON l.post_id = p.id

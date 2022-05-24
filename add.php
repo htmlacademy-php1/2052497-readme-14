@@ -210,7 +210,7 @@ $page_content = include_template(
 $layout_content = include_template(
     'layout.php',
     [
-        'page_content' => $paget_content,
+        'page_content' => $page_content,
         'user' => $user,
         'page_title' => 'НОВЫЙ ПОСТ'
     ]
