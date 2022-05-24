@@ -8,7 +8,7 @@ $get_type = "";
 $get_type_id = filter_input(INPUT_GET, 'type');
 if ($get_type_id) {
     foreach ($types as $type) {
-        if ($type['id'] == $get_type_id) {
+        if ($type['id'] === $get_type_id) {
             $get_type = $type['type'];
         };
     };

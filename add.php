@@ -16,14 +16,14 @@ if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get
     $get_type_id = $type['id'];
 } else {
     foreach ($types as $type) {
-        if ($type['id'] == $get_type_id) {
+        if ($type['id'] === $get_type_id) {
             $get_type = $type['type'];
         };
     };
 };
 
 $has_errors = [];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $user['id'];
     $header = htmlspecialchars(filter_input(INPUT_POST, 'header') ?? '');
     $text = htmlspecialchars(filter_input(INPUT_POST, 'text') ?? '');

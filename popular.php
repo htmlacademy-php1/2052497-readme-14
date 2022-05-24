@@ -4,15 +4,16 @@ require_once 'session.php';
 require_once 'helpers.php';
 
 // Сортрировка по дате, лайкам или просмотрам
-$get_order = 'view';
-$order = 'p.view_count';
 $get_order = htmlspecialchars(filter_input(INPUT_GET, 'order') ?? '');
 if (in_array($get_order, ['likes', 'date'], true)) {
     if ($get_order === 'likes') {
-        $order = 'p.id';
+        $order = 'likes_count';
     } elseif ($get_order === 'date') {
-        $order = 'p.dt_add';
+        $order = 'p.id';
     }
+} else {
+    $get_order = 'view';
+    $order = 'p.view_count';
 };
 
 //Сортировка по типу контента

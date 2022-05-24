@@ -42,7 +42,7 @@ if (empty($get_penpal) && isset($penpal['id'])) {
 if (isset($get_penpal)) {
     $page = 'messages.php';
     // Валидация и запись сообщения
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $new_message = htmlspecialchars(trim($_POST['new_message']));
         $get_user_id = htmlspecialchars($_POST['user_id']);
         if (empty($new_message)) {

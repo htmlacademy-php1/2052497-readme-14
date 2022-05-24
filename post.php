@@ -47,7 +47,7 @@ $comments = mysqli_fetch_all($result_comments, MYSQLI_ASSOC);
 $hashtags = get_hashtags($con, $post['id']);
 
 // Валидация и добавление комментария
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_comm = htmlspecialchars(trim($_POST['new_comm']));
     $get_post_id = htmlspecialchars($_POST['post_id']);
     if (empty($new_comm)) {
