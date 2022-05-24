@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'init.php';
 require_once 'session.php';
@@ -20,7 +21,8 @@ $penpals = mysqli_fetch_all($res_users, MYSQLI_ASSOC);
 if (filter_input(INPUT_GET, 'penpal')) {
     $get_penpal = htmlspecialchars($_GET['penpal']);
     $sql_history_mess = "SELECT id FROM messages
-    WHERE (from_user_id = $get_penpal and to_user_id = $user_id) OR (from_user_id = $user_id and to_user_id = $get_penpal)
+    WHERE (from_user_id = $get_penpal and to_user_id = $user_id) 
+    OR (from_user_id = $user_id and to_user_id = $get_penpal)
     LIMIT 1";
     $res_check_mess = mysqli_query($con, $sql_history_mess);
     $check_penpal = mysqli_fetch_assoc($res_check_mess);
@@ -42,7 +44,7 @@ if (empty($get_penpal) && isset($penpal['id'])) {
 if (isset($get_penpal)) {
     $page = 'messages.php';
     // Валидация и запись сообщения
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $new_message = htmlspecialchars(trim($_POST['new_message']));
         $get_user_id = htmlspecialchars($_POST['user_id']);
         if (empty($new_message)) {
@@ -82,6 +84,22 @@ if (isset($get_penpal)) {
 };
 
 
-$page_content = include_template($page, ['has_errors' => $has_errors, 'penpals' => $penpals, 'messages' => $messages, 'get_penpal' => $get_penpal, 'user' => $user]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Сообщения']);
+$page_content = include_template(
+    $page,
+    [
+        'has_errors' => $has_errors,
+        'penpals' => $penpals,
+        'messages' => $messages,
+        'get_penpal' => $get_penpal,
+        'user' => $user
+    ]
+);
+$layout_content = include_template(
+    'layout.php',
+    [
+        'page_content' => $page_content,
+        'user' => $user,
+        'page_title' => 'Сообщения'
+    ]
+);
 print($layout_content);

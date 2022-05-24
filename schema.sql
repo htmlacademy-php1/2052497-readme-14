@@ -52,6 +52,7 @@ CREATE TABLE likes (
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
     post_id INT NOT NULL,
+    dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (post_id) REFERENCES posts (id),
     PRIMARY KEY (user_id, post_id)
 );

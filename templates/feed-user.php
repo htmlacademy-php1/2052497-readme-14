@@ -106,7 +106,7 @@
                 </li>
                 <?php foreach ($types as $type) : ?>
                     <li class="feed__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= htmlspecialchars($type['type']); ?> button <?= $type['id'] == $get_type_id ? "filters__button--active" : ""; ?>" href="?type=<?= $type['id']; ?>">
+                        <a class="filters__button filters__button--<?= htmlspecialchars($type['type']); ?> button <?= $type['id'] === $get_type_id ? "filters__button--active" : ""; ?>" href="?type=<?= $type['id']; ?>">
                             <span class="visually-hidden"><?= $type['name']; ?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?= htmlspecialchars($type['type']); ?>"></use>

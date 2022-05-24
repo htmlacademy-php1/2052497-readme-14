@@ -70,7 +70,7 @@
                             </blockquote>
                         <?php elseif (htmlspecialchars($post['type']) === 'text') : ?>
                             <?= limit_string_lenght(htmlspecialchars($post['text_content'])) ?>
-                        <?php elseif (htmlspecialchars($post['type']) == 'photo') : ?>
+                        <?php elseif (htmlspecialchars($post['type']) === 'photo') : ?>
                             <div class="post-photo__image-wrapper">
                                 <img src="<?= htmlspecialchars($post['photo_content']); ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
@@ -134,8 +134,11 @@
             <?php endforeach; ?>
         </div>
         <div class="popular__page-links">
-            <a class="popular__page-link popular__page-link--prev button button--gray" <?= $page > 1 ? 'href="?page=' . $page - 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"' : ''; ?>>Предыдущая страница</a>
-            <a class="popular__page-link popular__page-link--next button button--gray" <?= $page - 1 < $count_page ? 'href="?page=' . $page + 1 . '&type=' . $get_type_id . '&order=' . $get_order . '"' : ''; ?>>Следующая страница</a>
+            <?php if ($page > 1):?>
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="?page=<?=$page - 1;?>&type=<?=$get_type_id;?>&order=<?=$get_order;?>" >Предыдущая страница</a>
+            <?php elseif ($page - 1 < $count_page):?>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="?page=<?=$page + 1;?>&type=<?=$get_type_id;?>&order=<?=$get_order;?>">Следующая страница</a>
+            <?php endif;?>
         </div>
     </div>
 </section>

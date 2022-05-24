@@ -16,5 +16,9 @@
     "require": {
         "symfony/mailer": "^6.0",
         "swiftmailer/swiftmailer": "^6.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "friendsofphp/php-cs-fixer": "^3.8"
     }
 }

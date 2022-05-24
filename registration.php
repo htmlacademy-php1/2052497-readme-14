@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'init.php';
 
@@ -6,12 +7,12 @@ if (isset($_SESSION['username'])) {
     header("Location: /popular.php");
 };
 $has_errors = [];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $avatar = null;
-    $email = htmlspecialchars($_POST['email']);
-    $login = htmlspecialchars($_POST['login']);
-    $password = htmlspecialchars($_POST['password']);
-    $password_repeat = htmlspecialchars($_POST['password-repeat']);
+    $email = htmlspecialchars($_POST['email'] ?? '');
+    $login = htmlspecialchars($_POST['login'] ?? '');
+    $password = htmlspecialchars($_POST['password'] ?? '');
+    $password_repeat = htmlspecialchars($_POST['password-repeat'] ?? '');
 
     // Проверка емэйла на пустоту, корректность и уникальность.
     if (empty($email)) {
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $password = password_hash($password, PASSWORD_DEFAULT);
     };
-    // Проверка аватакри на соответствие формату и размеру, сохранение на сервере   
+    // Проверка аватакри на соответствие формату и размеру, сохранение на сервере
     if (!empty($_FILES['photo']['name'])) {
         $mime_type = $_FILES['photo']['type'];
         $rules_photo = [
@@ -96,5 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 };
 
 $page_content = include_template('reg-user.php', ['has_errors' => $has_errors]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'page_title' => 'readme: Регистрация']);
+$layout_content = include_template(
+    'layout.php',
+    ['page_content' => $page_content, 'page_title' => 'readme: Регистрация']
+);
 print($layout_content);

@@ -1,16 +1,16 @@
 <?php
+
 require_once 'init.php';
 require_once 'session.php';
 require_once 'vendor/autoload.php';
-
 
 if (filter_input(INPUT_GET, 'user_id')) {
     $user = htmlspecialchars($_GET['user_id']);
     $follower = $_SESSION['id'];
     //Проверка существования пользователя и подписки
     $sql_sub = "SELECT DISTINCT u.id, u.username, email, s.follower_id FROM users u
-    LEFT JOIN subscriptions s ON s.follower_id = $follower and s.user_id = $user
-    WHERE id = $user";
+        LEFT JOIN subscriptions s ON s.follower_id = $follower and s.user_id = $user
+        WHERE id = $user";
     $res_sub = mysqli_query($con, $sql_sub);
     $check = mysqli_fetch_assoc($res_sub);
     // Запись подписки если ее нет, или удаление если есть

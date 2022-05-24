@@ -4,7 +4,7 @@
  *
  * @param $con mysqli Ресурс соединения
  *
- * @return $types Массив с типами контента
+ * @return array $types Массив с типами контента
  */
 function get_all_types($con) {
 $sql_types = 'SELECT * FROM type_content';
@@ -17,9 +17,9 @@ return $types;
  * Запрос комментариев к посту
  *
  * @param $con mysqli Ресурс соединения
- * @param array $post_id id поста для запроса комментариев
+ * @param int $post_id id поста для запроса комментариев
  *
- * @return $comments Массив с комментариями
+ * @return array $comments Массив с комментариями
  */
 function get_comments($con, $post_id){
     $sql_comments = "SELECT c.content, c.dt_add, u.id AS user_id, u.avatar, u.username FROM comments c
@@ -34,9 +34,9 @@ function get_comments($con, $post_id){
  * Запрос Xeштегов  к посту
  *
  * @param $con mysqli Ресурс соединения
- * @param array $post_id id поста для запроса xeштегов
+ * @param int $post_id id поста для запроса xeштегов
  *
- * @return $hashtags Массив с хештегами
+ * @return  array $hashtags Массив с хештегами
  */
 function get_hashtags($con, $post_id) {
     $sql_hashtags = "SELECT h.name FROM post_hashtag ph
@@ -50,9 +50,9 @@ function get_hashtags($con, $post_id) {
 /**
  * Меняет формат даты: "H:i" если от даты прошло меньше 24 часов и "d M" если больше
  *
- * @param $date дата 
+ * @param string $date дата 
  *
- * @return $date Дата в нужном формате
+ * @return string $date Дата в нужном формате
  */
 function convert_date($date) {
   
@@ -70,9 +70,9 @@ function convert_date($date) {
 /**
  * Показывает сколько прошло времени от временной метки в удобном формате **минут назад 
  *
- * @param $date дата 
+ * @param string $date дата 
  *
- * @return $date разница в удобном формате
+ * @return string $date разница в удобном формате
  */
 function convert_date_toeasy_form($date) {
   
@@ -109,10 +109,10 @@ function convert_date_toeasy_form($date) {
 /**
  * Ограничивае длину отображаемого текста до 300 символов в посте-плитке  
  *
- * @param $post строка для обработки
- * @param $lenght ограничение на длину строки, по умолчанию 300 символов  
+ * @param string $post строка для обработки
+ * @param int $lenght ограничение на длину строки, по умолчанию 300 символов  
  *
- * @return $post строка из 300 символов и "..."
+ * @return string $post строка из 300 символов и "..."
  */
 function limit_string_lenght($post, $lenght=300) {
     if (strlen($post) > $lenght) {
@@ -357,11 +357,11 @@ function extract_youtube_id($youtube_url)
     $parts = parse_url($youtube_url);
 
     if ($parts) {
-        if ($parts['path'] == '/watch') {
+        if ($parts['path'] === '/watch') {
             parse_str($parts['query'], $vars);
             $id = $vars['v'] ?? null;
         } else {
-            if ($parts['host'] == 'youtu.be') {
+            if ($parts['host'] === 'youtu.be') {
                 $id = substr($parts['path'], 1);
             }
         }

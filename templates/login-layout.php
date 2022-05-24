@@ -62,7 +62,7 @@
           <form class="authorization__form form" action="#" method="post">
             <div class="authorization__input-wrapper form__input-wrapper">
             <div class="form__input-section <?=isset($has_errors['login']) ? 'form__input-section--error' : '';?>">
-              <input class="authorization__input authorization__input--login form__input" type="text" name="login" placeholder="Логин"  value="<?=htmlspecialchars(filter_input(INPUT_POST, 'login'));?>">
+              <input class="authorization__input authorization__input--login form__input" type="text" name="login" placeholder="Логин"  value="<?=htmlspecialchars(filter_input(INPUT_POST, 'login') ?? '');?>">
               <svg class="form__input-icon" width="19" height="18">
                 <use xlink:href="#icon-input-user"></use>
               </svg>

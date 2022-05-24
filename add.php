@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'init.php';
 require_once 'session.php';
@@ -16,22 +17,22 @@ if (!in_array($get_type_id, array_column($types, 'id')) && $get_type_id || !$get
     $get_type_id = $type['id'];
 } else {
     foreach ($types as $type) {
-        if ($type['id'] == $get_type_id) {
+        if ($type['id'] === $get_type_id) {
             $get_type = $type['type'];
         };
     };
 };
-htmlspecialchars(filter_input(INPUT_GET, 'header'));
+
 $has_errors = [];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $user['id'];
-    $header = htmlspecialchars(filter_input(INPUT_POST, 'header'));
-    $text = htmlspecialchars(filter_input(INPUT_POST, 'text'));
-    $link = htmlspecialchars(filter_input(INPUT_POST, 'link'));
-    $video = htmlspecialchars(filter_input(INPUT_POST, 'video'));
-    $photo_url = htmlspecialchars(filter_input(INPUT_POST, 'photo_url'));
-    $str_hashtags = htmlspecialchars(filter_input(INPUT_POST, 'hashtags'));
-    $quote_author = htmlspecialchars(filter_input(INPUT_POST, 'quote-author'));
+    $header = htmlspecialchars(filter_input(INPUT_POST, 'header') ?? '');
+    $text = htmlspecialchars(filter_input(INPUT_POST, 'text') ?? '');
+    $link = htmlspecialchars(filter_input(INPUT_POST, 'link') ?? '');
+    $video = htmlspecialchars(filter_input(INPUT_POST, 'video') ?? '');
+    $photo_url = htmlspecialchars(filter_input(INPUT_POST, 'photo_url') ?? '');
+    $str_hashtags = htmlspecialchars(filter_input(INPUT_POST, 'hashtags') ?? '');
+    $quote_author = htmlspecialchars(filter_input(INPUT_POST, 'quote-author') ?? '');
     $tags_pettern = '/^#[A-zА-яёЁ0-9]{1,15}$/u';
     $has_errors = [];
     $rules_photo = [
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'type' => '.gif'
         ]
     ];
-    // Валидация заголовка    
+    // Валидация заголовка
     if (empty($header) || mb_strlen($header) > 50) {
         $has_errors['header'] = 'Заголовок не может быть пустым и длинее 50 символов';
     };
@@ -97,9 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $photo = '/uploads/' . $file_name;
             move_uploaded_file($_FILES['photo']['tmp_name'], $file_path . $file_name);
         };
-        // Валидация ссылки на фото 
+        // Валидация ссылки на фото
     } elseif (empty($_FILES['photo']['name']) && filter_var($photo_url, FILTER_VALIDATE_URL)) {
-        // Записывае файл в буфер и узнаем тип файла         
+        // Записывае файл в буфер и узнаем тип файла
         $buffer = file_get_contents($photo_url);
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mime_type = $finfo->buffer($buffer);
@@ -112,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!$type_file) {
             $has_errors['file'] = 'Неверный формат изображения';
         } elseif ($type_file && !$has_errors) {
-            // Сохранение файла на сервере 
+            // Сохранение файла на сервере
             $file_name = uniqid() . $type_file;
             $file_path = __DIR__ . '/uploads/';
             $photo = '/uploads/' . $file_name;
@@ -134,9 +135,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Добавляем новый пост в БД
     if (!$has_errors) {
-        $sql_add_post = 'INSERT INTO posts (header, quote_author, text_content, photo_content, video_content, link_content, user_id, type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        $sql_add_post = 'INSERT INTO posts (
+            header, quote_author, text_content, photo_content, video_content, link_content, user_id, type_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $add_post = mysqli_prepare($con, $sql_add_post);
-        mysqli_stmt_bind_param($add_post, 'ssssssss', $header, $quote_author, $text, $photo, $video, $link, $user_id, $get_type_id);
+        mysqli_stmt_bind_param(
+            $add_post,
+            'ssssssss',
+            $header,
+            $quote_author,
+            $text,
+            $photo,
+            $video,
+            $link,
+            $user_id,
+            $get_type_id
+        );
         $res_add_post = mysqli_stmt_execute($add_post);
         $new_post_id = mysqli_insert_id($con);
         // Добавляем хештеги поста
@@ -169,7 +183,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $message->setTo($follower['email']);
                 $message->setFrom("info@readme.ru");
                 $message->setSubject("Новая публикация от пользователя " . $user['username']);
-                $message->setBody("Здравствуйте, " . $follower['username'] . ". Пользователь " . $user['username'] . " только что опубликовал новую запись „" . $header . "“. Посмотрите её на странице пользователя: http://readme/profile.php?user=" . $user_id);
+                $message->setBody("Здравствуйте, " . $follower['username']
+                    . ". Пользователь " . $user['username']
+                    . " только что опубликовал новую запись „" . $header
+                    . "“. Посмотрите её на странице пользователя: http://readme/profile.php?user=" . $user_id);
                 $mailer = new Swift_Mailer($transport);
                 $mailer->send($message);
             };
@@ -181,7 +198,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     };
 };
 
-$page_content = include_template('adding-post.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'has_errors' => $has_errors, '_POST' => $_POST]);
-
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'НОВЫЙ ПОСТ']);
+$page_content = include_template(
+    'adding-post.php',
+    [
+        'types' => $types,
+        'get_type' => $get_type,
+        'get_type_id' => $get_type_id,
+        'has_errors' => $has_errors
+    ]
+);
+$layout_content = include_template(
+    'layout.php',
+    [
+        'page_content' => $paget_content,
+        'user' => $user,
+        'page_title' => 'НОВЫЙ ПОСТ'
+    ]
+);
 print($layout_content);

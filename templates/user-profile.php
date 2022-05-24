@@ -27,10 +27,8 @@
             <div class="profile__user-buttons user__buttons">
               <?php if (empty($profile['subscription'])) :; ?>
                 <button class="profile__user-button user__button user__button--subscription button button--main" type="submit" name='user_id' value="<?= $profile['id']; ?>">Подписаться</button>
-              <?php elseif (isset($profile['subscription'])) :; ?>
+              <?php elseif (!empty($profile['subscription'])) :; ?>
                 <button class="profile__user-button user__button user__button--subscription button button--quartz" type="submit" name='user_id' value="<?= $profile['id']; ?>">Отписаться</button>
-              <?php endif; ?>
-              <?php if (isset($profile['subscription'])) :; ?>
                 <a class="profile__user-button user__button user__button--writing button button--green" href="messages.php?penpal=<?= $profile['id']; ?>">Сообщение</a>
               <?php endif; ?>
             </div>
