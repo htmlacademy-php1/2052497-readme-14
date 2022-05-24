@@ -23,9 +23,9 @@
                                             <?= htmlspecialchars(mb_substr($penpal['content'], 0, 15)); ?>
                                         </p>
                                     <?php endif; ?>
-                                    <?php if (isset($penpal['dt_add'])) : ?>
+                                    <?php if (!empty($penpal['dt_add'])) : ?>
                                         <time class="messages__preview-time" datetime="<?= $penpal['dt_add']; ?>">
-                                            <?= convert_date($penpal['dt_add']); ?>
+                                            <?= convert_date($penpal['dt_add']) ?? ''; ?>
                                         </time>
                                     <?php endif; ?>
                                 </div>

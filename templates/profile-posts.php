@@ -3,7 +3,7 @@
     <h2 class="visually-hidden">Публикации</h2>
     <?php foreach ($posts as $post) :; ?>
       <article class="profile__post post post-photo">
-        <?php if ($post['creator'] === $profile['id']) : ?>
+        <?php if (empty($post['creator'])): ?>
           <header class="post__header">
             <h2><?= htmlspecialchars($post['header']); ?></h2>
           </header>
@@ -12,7 +12,7 @@
             <div class="post__author">
               <a class="post__author-link" href="profile.php?user=<?= $post['creator']; ?>" title="Автор">
                 <div class="post__avatar-wrapper post__avatar-wrapper--repost">
-                  <?= isset($post['avatar']) ? '<img class="post__author-avatar" src="' . htmlspecialchars($post['avatar']) . '" alt="Аватар профиля">' : ''; ?>
+                  <?= isset($post['avatar']) ? '<img class="user__avatar" src="' . htmlspecialchars($post['avatar']) . '" alt="Аватар профиля">' : ''; ?>
                 </div>
                 <div class="post__info">
                   <b class="post__author-name">Репост: <?= htmlspecialchars($post['username']); ?></b>
@@ -20,6 +20,7 @@
                 </div>
               </a>
             </div>
+            <h2><?= htmlspecialchars($post['header']); ?></h2>
           </header>
         <?php endif; ?>
         <div class="post__main">
