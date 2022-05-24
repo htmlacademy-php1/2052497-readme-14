@@ -1,4 +1,5 @@
 <?php
+
 require_once 'init.php';
 require_once 'session.php';
 require_once 'helpers.php';
@@ -24,7 +25,7 @@ if (in_array($get_type_id, array_column($types, 'id'))) {
     $sql_sort_type = "WHERE p.type_id = " . $get_type_id;
 };
 
-// Пагинация 
+// Пагинация
 $offset = '';
 $page = 1;
 $sql_count_post = "SELECT COUNT(p.id) AS count_posts FROM posts p $sql_sort_type";
@@ -53,6 +54,23 @@ $sql_posts = "SELECT p.id, p.user_id, u.username, u.avatar, p.header, p.dt_add, 
 $result = mysqli_query($con, $sql_posts);
 $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$page_content = include_template('main.php', ['posts' => $posts, 'types' => $types, 'get_type_id' => $get_type_id, 'page' => $page, 'count_page' => $count_page, 'get_order' => $get_order]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'readme: популярное']);
+$page_content = include_template(
+    'main.php',
+    [
+        'posts' => $posts,
+        'types' => $types,
+        'get_type_id' => $get_type_id,
+        'page' => $page,
+        'count_page' => $count_page,
+        'get_order' => $get_order
+    ]
+);
+$layout_content = include_template(
+    'layout.php',
+    [
+        'page_content' => $page_content,
+        'user' => $user,
+        'page_title' => 'readme: популярное'
+    ]
+);
 print($layout_content);

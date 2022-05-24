@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'init.php';
 require_once 'session.php';
@@ -32,7 +33,7 @@ if (isset($post)) {
 };
 // Массив с комментариями
 $limit = 'LIMIT 3';
-if (filter_input(INPUT_GET, 'all') === 'on'){
+if (filter_input(INPUT_GET, 'all') === 'on') {
     $limit = '';
 };
 $sql_comments = "SELECT c.id, c.content, c.dt_add, u.id AS user_id, u.avatar, u.username FROM comments c
@@ -73,7 +74,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 };
 
 $post_info = include_template('post-' . $post['type'] . '.php', ['post' => $post]);
-$page_content = include_template('post-details.php', ['post' => $post, 'post_info' => $post_info,
-    'hashtags' => $hashtags, 'comments' => $comments, 'user' => $user, 'has_errors' => $has_errors]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => $post['header']]);
+$page_content = include_template(
+    'post-details.php',
+    [
+        'post' => $post,
+        'post_info' => $post_info,
+        'hashtags' => $hashtags,
+        'comments' => $comments,
+        'user' => $user,
+        'has_errors' => $has_errors
+    ]
+);
+$layout_content = include_template(
+    'layout.php',
+    [
+        'page_content' => $page_content,
+        'user' => $user,
+        'page_title' => $post['header']
+    ]
+);
 print($layout_content);

@@ -1,4 +1,5 @@
 <?php
+
 require_once 'init.php';
 require_once 'session.php';
 require_once 'helpers.php';
@@ -38,7 +39,7 @@ if (isset($sql_where)) {
     $result_posts = mysqli_query($con, $sql_posts);
     $posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
     foreach ($posts as $post) {
-        $post['hashtags'] = get_hashtags($con, $post['id']);        
+        $post['hashtags'] = get_hashtags($con, $post['id']);
     };
 };
 
@@ -48,6 +49,12 @@ if ($posts) {
     $page = 'no-results.php';
 };
 
-$page_content = include_template($page, ['posts' => $posts, 'user' => $user, 'search' => $search]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Поиск']);
+$page_content = include_template(
+    $page,
+    ['posts' => $posts, 'user' => $user, 'search' => $search]
+);
+$layout_content = include_template(
+    'layout.php',
+    ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Поиск']
+);
 print($layout_content);

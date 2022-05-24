@@ -1,4 +1,5 @@
 <?php
+
 require_once 'init.php';
 require_once 'session.php';
 require_once 'helpers.php';
@@ -46,6 +47,18 @@ if (count($subscriptions) > 0) {
     $posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
 };
 
-$page_content = include_template('feed-user.php', ['types' => $types, 'get_type' => $get_type, 'get_type_id' => $get_type_id, 'posts' => $posts]);
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'user' => $user, 'page_title' => 'Readme: Лента']);
+$page_content = include_template(
+    'feed-user.php',
+    [
+        'types' => $types, 'get_type' => $get_type,
+        'get_type_id' => $get_type_id, 'posts' => $posts
+    ]
+);
+$layout_content = include_template(
+    'layout.php',
+    [
+        'page_content' => $page_content,
+        'user' => $user, 'page_title' => 'Readme: Лента'
+    ]
+);
 print($layout_content);
