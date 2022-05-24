@@ -120,10 +120,10 @@
               <div class="post-details__user-buttons user__buttons">
                 <?php if (empty($post['subscription'])) :; ?>
                   <button class="profile__user-button user__button user__button--subscription button button--main" type="submit" name='user_id' value="<?= $post['user_id']; ?>">Подписаться</button>
-                <?php elseif (isset($post['subscription'])) :; ?>
-                  <button class="profile__user-button user__button user__button--subscription button button--quartz" type="submit" name='user_id' value="<?= $post['user_id']; ?>">Отписаться</button>
-                <?php endif; ?>
+                <?php elseif (!empty($post['subscription'])) :; ?>
+                  <button class="profile__user-button user__button user__button--subscription button button--quartz" type="submit" name='user_id' value="<?= $post['user_id']; ?>">Отписаться</button>                
                 <a class="user__button user__button--writing button button--green" href="messages.php?penpal=<?= $post['user_id']; ?>">Сообщение</a>
+                <?php endif;?>
               </div>
             </form>
           <?php endif; ?>

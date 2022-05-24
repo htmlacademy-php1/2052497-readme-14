@@ -8,10 +8,10 @@ if (isset($_SESSION['username'])) {
 $has_errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     $avatar = null;
-    $email = htmlspecialchars($_POST['email']);
-    $login = htmlspecialchars($_POST['login']);
-    $password = htmlspecialchars($_POST['password']);
-    $password_repeat = htmlspecialchars($_POST['password-repeat']);
+    $email = htmlspecialchars($_POST['email'] ?? '');
+    $login = htmlspecialchars($_POST['login'] ?? '');
+    $password = htmlspecialchars($_POST['password'] ?? '');
+    $password_repeat = htmlspecialchars($_POST['password-repeat'] ?? '');
 
     // Проверка емэйла на пустоту, корректность и уникальность.
     if (empty($email)) {

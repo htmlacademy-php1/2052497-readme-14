@@ -6,7 +6,7 @@ require_once 'helpers.php';
 // Сортрировка по дате, лайкам или просмотрам
 $get_order = 'view';
 $order = 'p.view_count';
-$get_order = htmlspecialchars(filter_input(INPUT_GET, 'order'));
+$get_order = htmlspecialchars(filter_input(INPUT_GET, 'order') ?? '');
 if (in_array($get_order, ['likes', 'date'], true)) {
     if ($get_order === 'likes') {
         $order = 'p.id';
